@@ -26,9 +26,9 @@ const navigationConfig = {
     label: 'THE BSSF',
     items: [
       { href: '/about', label: 'About Us' },
-      { href: '/mission', label: 'Mission & Vision' },
-      { href: '/history', label: 'History' },
-      { href: '/constitution', label: 'Constitution' },
+      { href: '/about#vision-mission', label: 'Mission & Vision' },
+      { href: '/about#history', label: 'History' },
+      // { href: '/constitution', label: 'Constitution' },
     ],
   },
   members: {
@@ -47,6 +47,19 @@ const navigationConfig = {
       { href: '/national-team', label: 'National Team' },
       { href: '/junior-team', label: 'Junior Team' },
       { href: '/achievements', label: 'Achievements' },
+    ],
+  },
+  playersRankings: {
+    label: 'PLAYERS & RANKINGS',
+    items: [
+      {
+        href: '/players-rankings#national-profiles',
+        label: 'National Player Profiles (With Ranking)',
+      },
+      {
+        href: '/players-rankings#coaches-officials',
+        label: 'Coaches & Officials',
+      },
     ],
   },
   newsPress: {
@@ -71,22 +84,49 @@ const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleNavClick = (hash: string) => {
-    const element = document.querySelector(hash);
+  // Handle smooth scroll to hash sections
+  const handleHashNavigation = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    // Check if href contains a hash
+    if (href.includes('#')) {
+      e.preventDefault();
+      const [path, hash] = href.split('#');
+      const hashId = `#${hash}`;
 
-    if (pathname === '/') {
-      if (element) {
+      // If already on the about page, just scroll
+      if (pathname === '/about' || pathname === path) {
+        const element = document.querySelector(hashId);
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            });
+          }, 100);
+        }
+      } else {
+        // Navigate to the page first
+        router.push(href);
+        // Wait for navigation and scroll after page loads
         setTimeout(() => {
-          element.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          });
-        }, 50);
+          const checkAndScroll = () => {
+            const element = document.querySelector(hashId);
+            if (element) {
+              element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+              });
+            } else {
+              // Retry if element not found yet
+              setTimeout(checkAndScroll, 100);
+            }
+          };
+          checkAndScroll();
+        }, 300);
       }
-      return;
     }
-
-    router.push(`/${hash}`);
   };
 
   useEffect(() => {
@@ -111,6 +151,24 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
+
+  // Handle hash navigation on page load
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash;
+      if (hash && pathname === '/about') {
+        setTimeout(() => {
+          const element = document.querySelector(hash);
+          if (element) {
+            element.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            });
+          }
+        }, 500);
+      }
+    }
+  }, [pathname]);
 
   const toggleMobileMenu = (menuKey: string) => {
     setMobileOpenMenus((prev) => {
@@ -176,6 +234,9 @@ const Header = () => {
                             <NavigationMenuLink asChild>
                               <Link
                                 href={item.href}
+                                onClick={(e) =>
+                                  handleHashNavigation(e, item.href)
+                                }
                                 className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100"
                               >
                                 <div className="text-sm font-medium leading-none">
@@ -215,7 +276,7 @@ const Header = () => {
                   </NavigationMenuItem>
 
                   {/* ATHLETE Dropdown */}
-                  <NavigationMenuItem>
+                  {/* <NavigationMenuItem>
                     <NavigationMenuTrigger className="bg-transparent hover:bg-gray-100 text-gray-800 font-medium text-sm uppercase">
                       {navigationConfig.athlete.label}
                     </NavigationMenuTrigger>
@@ -237,10 +298,10 @@ const Header = () => {
                         ))}
                       </ul>
                     </NavigationMenuContent>
-                  </NavigationMenuItem>
+                  </NavigationMenuItem> */}
 
                   {/* NEWS & PRESS Dropdown */}
-                  <NavigationMenuItem>
+                  {/* <NavigationMenuItem>
                     <NavigationMenuTrigger className="bg-transparent hover:bg-gray-100 text-gray-800 font-medium text-sm uppercase">
                       {navigationConfig.newsPress.label}
                     </NavigationMenuTrigger>
@@ -262,33 +323,60 @@ const Header = () => {
                         ))}
                       </ul>
                     </NavigationMenuContent>
+                  </NavigationMenuItem> */}
+
+                  {/* PLAYERS & RANKINGS Dropdown */}
+                  {/* <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent hover:bg-gray-100 text-gray-800 font-medium text-sm uppercase">
+                      {navigationConfig.playersRankings.label}
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid w-[280px] gap-1 p-2">
+                        {navigationConfig.playersRankings.items.map((item) => (
+                          <li key={item.href}>
+                            <NavigationMenuLink asChild>
+                              <Link
+                                href={item.href}
+                                onClick={(e) =>
+                                  handleHashNavigation(e, item.href)
+                                }
+                                className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100"
+                              >
+                                <div className="text-sm font-medium leading-none">
+                                  {item.label}
+                                </div>
+                              </Link>
+                            </NavigationMenuLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem> */}
+                  <NavigationMenuItem>
+                    <Link
+                      href="/players-rankings"
+                      className="inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium uppercase text-gray-800 hover:bg-gray-100 transition-colors"
+                    >
+                      PLAYERS & RANKINGS
+                    </Link>
                   </NavigationMenuItem>
 
                   {/* Static Links */}
                   <NavigationMenuItem>
                     <Link
-                      href="/events"
+                      href="/news"
                       className="inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium uppercase text-gray-800 hover:bg-gray-100 transition-colors"
                     >
-                      EVENTS
+                      NEWS
                     </Link>
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
                     <Link
-                      href="/archives"
+                      href="/media-gallery"
                       className="inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium uppercase text-gray-800 hover:bg-gray-100 transition-colors"
                     >
-                      ARCHIVES
-                    </Link>
-                  </NavigationMenuItem>
-
-                  <NavigationMenuItem>
-                    <Link
-                      href="/gallery"
-                      className="inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium uppercase text-gray-800 hover:bg-gray-100 transition-colors"
-                    >
-                      GALLERY
+                      MEDIA GALLERY
                     </Link>
                   </NavigationMenuItem>
 
@@ -357,8 +445,11 @@ const Header = () => {
                               <SheetClose asChild key={item.href}>
                                 <Link
                                   href={item.href}
+                                  onClick={(e) => {
+                                    handleHashNavigation(e, item.href);
+                                    setIsOpen(false);
+                                  }}
                                   className="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md transition-colors"
-                                  onClick={() => setIsOpen(false)}
                                 >
                                   {item.label}
                                 </Link>
@@ -461,6 +552,43 @@ const Header = () => {
                         )}
                       </div>
 
+                      {/* PLAYERS & RANKINGS Mobile Dropdown */}
+                      <div className="border-b pb-2">
+                        <button
+                          onClick={() => toggleMobileMenu('playersRankings')}
+                          className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium uppercase hover:bg-gray-100 rounded-md transition-colors"
+                        >
+                          <span>{navigationConfig.playersRankings.label}</span>
+                          <ChevronDown
+                            className={cn(
+                              'w-4 h-4 transition-transform',
+                              mobileOpenMenus.has('playersRankings') &&
+                                'rotate-180'
+                            )}
+                          />
+                        </button>
+                        {mobileOpenMenus.has('playersRankings') && (
+                          <div className="ml-4 mt-1 space-y-1">
+                            {navigationConfig.playersRankings.items.map(
+                              (item) => (
+                                <SheetClose asChild key={item.href}>
+                                  <Link
+                                    href={item.href}
+                                    onClick={(e) => {
+                                      handleHashNavigation(e, item.href);
+                                      setIsOpen(false);
+                                    }}
+                                    className="block px-4 py-2 text-sm hover:bg-gray-100 rounded-md transition-colors"
+                                  >
+                                    {item.label}
+                                  </Link>
+                                </SheetClose>
+                              )
+                            )}
+                          </div>
+                        )}
+                      </div>
+
                       {/* Static Mobile Links */}
                       <SheetClose asChild>
                         <Link
@@ -474,21 +602,21 @@ const Header = () => {
 
                       <SheetClose asChild>
                         <Link
-                          href="/archives"
+                          href="/news"
                           className="px-4 py-3 text-sm font-medium uppercase hover:bg-gray-100 rounded-md transition-colors"
                           onClick={() => setIsOpen(false)}
                         >
-                          ARCHIVES
+                          News
                         </Link>
                       </SheetClose>
 
                       <SheetClose asChild>
                         <Link
-                          href="/gallery"
+                          href="/media-gallery"
                           className="px-4 py-3 text-sm font-medium uppercase hover:bg-gray-100 rounded-md transition-colors"
                           onClick={() => setIsOpen(false)}
                         >
-                          GALLERY
+                          MEDIA GALLERY
                         </Link>
                       </SheetClose>
 

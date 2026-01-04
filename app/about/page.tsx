@@ -96,7 +96,7 @@ const AboutPage = () => {
           <div className="mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center gap-3">
               <span className="w-1 h-12 bg-blue-600 rounded-full"></span>
-              Overview / About BSRF
+              About Bangladesh Squash Rackets Federation (BSRF)
             </h2>
           </div>
           <div className="prose prose-lg max-w-none">

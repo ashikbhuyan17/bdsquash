@@ -167,7 +167,7 @@ const PlayersRankingsPage = () => {
   return (
     <div className="min-h-screen bg-white text-gray-900 pt-[90px]">
       {/* Hero Section */}
-      <section className="relative w-full h-[300px] md:h-[400px] overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
+      <section className="relative w-full h-[300px] md:h-[400px] overflow-hidden bg-gradient-to-br from-green-600 via-green-700 to-green-800">
         <div className="absolute inset-0 bg-black/20" />
         <div className="relative z-10 h-full flex items-center justify-center">
           <div className="text-center px-4 max-w-4xl mx-auto">
@@ -187,7 +187,7 @@ const PlayersRankingsPage = () => {
         <section id="national-profiles" className="mb-20 scroll-mt-24">
           <div className="mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <Trophy className="w-8 h-8 text-blue-600" />
+              <Trophy className="w-8 h-8 text-green-600" />
               <span>National Player Profiles</span>
             </h2>
             <p className="text-gray-600 text-lg">
@@ -218,7 +218,7 @@ const PlayersRankingsPage = () => {
                   onClick={() => setFilterCategory(cat)}
                   className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                     filterCategory === cat
-                      ? 'bg-blue-600 text-white shadow-md'
+                      ? 'bg-green-600 text-white shadow-md'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -250,7 +250,7 @@ const PlayersRankingsPage = () => {
             {filteredPlayers.map((player) => (
               <div
                 key={player.id}
-                className="group relative bg-white border border-gray-200 rounded-xl p-6 transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-100 hover:border-blue-300 cursor-pointer"
+                className="group relative bg-white border border-gray-200 rounded-xl p-6 transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-xl hover:shadow-green-100 hover:border-green-300 cursor-pointer"
               >
                 {/* Ranking Badge - Top 3 Special */}
                 <div
@@ -261,7 +261,7 @@ const PlayersRankingsPage = () => {
                       ? 'bg-gradient-to-br from-gray-300 to-gray-500 text-white group-hover:scale-110 group-hover:shadow-gray-300/50'
                       : player.ranking === 3
                       ? 'bg-gradient-to-br from-orange-400 to-orange-600 text-white group-hover:scale-110 group-hover:shadow-orange-300/50'
-                      : 'bg-gradient-to-br from-blue-500 to-blue-700 text-white group-hover:scale-110 group-hover:shadow-blue-300/50'
+                      : 'bg-gradient-to-br from-green-500 to-green-700 text-white group-hover:scale-110 group-hover:shadow-green-300/50'
                   }`}
                 >
                   <span className="relative z-10">#{player.ranking}</span>
@@ -272,7 +272,7 @@ const PlayersRankingsPage = () => {
 
                 {/* Player Photo */}
                 <div className="flex flex-col items-center mb-4">
-                  <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-gray-100 group-hover:border-blue-300 transition-colors duration-300">
+                  <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-gray-100 group-hover:border-green-300 transition-colors duration-300">
                     <Image
                       //   src={player.photo}
                       src="/user-avatar.png"
@@ -285,11 +285,11 @@ const PlayersRankingsPage = () => {
 
                 {/* Player Info */}
                 <div className="text-center space-y-2">
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-green-600 transition-colors duration-300">
                     {player.name}
                   </h3>
                   <div className="flex items-center justify-center gap-2 flex-wrap">
-                    <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
+                    <span className="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm font-medium">
                       {player.position}
                     </span>
                     <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
@@ -323,7 +323,7 @@ const PlayersRankingsPage = () => {
         <section id="coaches-officials" className="mb-16 scroll-mt-24">
           <div className="mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <Award className="w-8 h-8 text-blue-600" />
+              <Award className="w-8 h-8 text-green-600" />
               <span>Coaches & Officials</span>
             </h2>
             <p className="text-gray-600 text-lg">
@@ -342,7 +342,7 @@ const PlayersRankingsPage = () => {
                 <div
                   className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold transition-all duration-300 ${
                     coach.role.toLowerCase().includes('coach')
-                      ? 'bg-blue-100 text-blue-700 group-hover:bg-blue-200'
+                      ? 'bg-green-100 text-green-700 group-hover:bg-green-200'
                       : 'bg-gray-100 text-gray-700 group-hover:bg-gray-200'
                   }`}
                 >
@@ -351,7 +351,7 @@ const PlayersRankingsPage = () => {
 
                 {/* Profile Photo */}
                 <div className="flex flex-col items-center mb-4 pt-4">
-                  <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200 group-hover:border-blue-300 transition-colors duration-300">
+                  <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200 group-hover:border-green-300 transition-colors duration-300">
                     <Image
                       //   src={coach.photo}
                       src="/user-avatar.png"
@@ -364,7 +364,7 @@ const PlayersRankingsPage = () => {
 
                 {/* Coach Info */}
                 <div className="text-center space-y-2">
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-green-600 transition-colors duration-300">
                     {coach.name}
                   </h3>
                   <p className="text-sm font-medium text-gray-600">

@@ -354,22 +354,30 @@ const Header = () => {
                   </NavigationMenuItem> */}
                   <NavigationMenuItem>
                     <Link
-                      href="/players-rankings"
-                      className="inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium uppercase text-gray-800 hover:bg-gray-100 transition-colors"
-                    >
-                      PLAYERS & RANKINGS
-                    </Link>
-                  </NavigationMenuItem>
-
-                  {/* Static Links */}
-                  <NavigationMenuItem>
-                    <Link
                       href="/news"
                       className="inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium uppercase text-gray-800 hover:bg-gray-100 transition-colors"
                     >
                       NEWS
                     </Link>
                   </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <Link
+                      href="/events"
+                      className="inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium uppercase text-gray-800 hover:bg-gray-100 transition-colors"
+                    >
+                      EVENTS
+                    </Link>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <Link
+                      href="/players-rankings"
+                      className="inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium uppercase text-gray-800 hover:bg-gray-100 transition-colors"
+                    >
+                      PLAYERS & Officials
+                    </Link>
+                  </NavigationMenuItem>
+
+                  {/* Static Links */}
 
                   <NavigationMenuItem>
                     <Link

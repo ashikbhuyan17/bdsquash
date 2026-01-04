@@ -232,14 +232,12 @@ const NewsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 p-4  pt-[130px]">
+    <div className="min-h-screen bg-gray-50 p-4  pt-[130px]">
       <div className="container mx-auto">
         {/* Header */}
         <header className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-            Latest News
-          </h1>
-          <p className="text-gray-400">Hockey & Squash Updates</p>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">Latest News</h1>
+          <p className="text-gray-700">Hockey & Squash Updates</p>
         </header>
 
         {/* News Grid */}

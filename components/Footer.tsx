@@ -122,10 +122,21 @@ const Footer = () => {
       {/* Copyright Bar */}
       <div className="bg-black/40 border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+          <div className="flex flex-col justify-center items-center gap-4">
             <p className="text-sm text-gray-400 text-center">
               © 2026 By Bangladesh Squash Rackets Federation. All Rights
               Reserved.
+            </p>
+            <p className="text-sm text-gray-400 text-center">
+              Developed by{' '}
+              <a
+                href="https://aesthitech.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#FCDCAC] hover:text-[#e7c188] transition-colors duration-200 font-medium cursor-pointer underline hover:no-underline inline-block relative z-10 pointer-events-auto"
+              >
+                AesthiTech Ltd.
+              </a>
             </p>
           </div>
         </div>

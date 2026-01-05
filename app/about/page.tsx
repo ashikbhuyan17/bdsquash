@@ -158,6 +158,57 @@ const AboutPage = () => {
         </section>
 
         <div className="border-t border-gray-200 my-12"></div>
+        {/* President's Message Section */}
+        <section id="presidents-message" className="mb-16 scroll-mt-24">
+          <div className="mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+              <span className="w-1 h-12 bg-blue-600 rounded-full"></span>
+              President&apos;s Message
+            </h2>
+          </div>
+          <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-8 md:p-12 rounded-lg border border-gray-200">
+            <div className="max-w-4xl">
+              <p className="text-gray-700 leading-relaxed text-lg mb-6 italic">
+                &quot;It is with great pleasure and pride that I welcome you to
+                the Bangladesh Squash Rackets Federation. As we continue our
+                journey to elevate squash in Bangladesh, I am inspired by the
+                dedication and passion of our athletes, coaches, and supporters.
+              </p>
+              <p className="text-gray-700 leading-relaxed text-lg mb-6">
+                Our federation is committed to creating pathways for excellence,
+                fostering a culture of sportsmanship, and building a strong
+                foundation for the future of squash in our nation. We believe
+                that through collective effort and unwavering commitment, we can
+                achieve remarkable milestones and bring glory to Bangladesh on
+                the international stage.
+              </p>
+              <p className="text-gray-700 leading-relaxed text-lg mb-6">
+                I extend my heartfelt gratitude to all members, partners, and
+                stakeholders who continue to support our mission. Together, we
+                will write the next chapter in Bangladesh&apos;s squash
+                history.&quot;
+              </p>
+              <div className="mt-8 pt-6 border-t border-gray-300">
+                {/* Avatar Image */}
+                <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+                  <Image
+                    src="/President.jpeg"
+                    alt="President"
+                    width={64}
+                    height={64}
+                    className="object-cover"
+                  />
+                </div>
+                <p className="text-xl font-bold text-gray-900">
+                  Maj Gen Md Hasan Uz Zaman (ndu, afwc, psc, MPhil)
+                </p>
+                <p className="text-gray-600">President, BSRF</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="border-t border-gray-200 my-12"></div>
 
         {/* Vision, Mission & Objectives Section */}
         <section id="vision-mission" className="mb-16 scroll-mt-24">
@@ -305,62 +356,10 @@ const AboutPage = () => {
           </div>
         </section>
 
-        <div className="border-t border-gray-200 my-12"></div>
-
-        {/* President's Message Section */}
-        <section id="presidents-message" className="mb-16 scroll-mt-24">
-          <div className="mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="w-1 h-12 bg-blue-600 rounded-full"></span>
-              President&apos;s Message
-            </h2>
-          </div>
-          <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-8 md:p-12 rounded-lg border border-gray-200">
-            <div className="max-w-4xl">
-              <p className="text-gray-700 leading-relaxed text-lg mb-6 italic">
-                &quot;It is with great pleasure and pride that I welcome you to
-                the Bangladesh Squash Rackets Federation. As we continue our
-                journey to elevate squash in Bangladesh, I am inspired by the
-                dedication and passion of our athletes, coaches, and supporters.
-              </p>
-              <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                Our federation is committed to creating pathways for excellence,
-                fostering a culture of sportsmanship, and building a strong
-                foundation for the future of squash in our nation. We believe
-                that through collective effort and unwavering commitment, we can
-                achieve remarkable milestones and bring glory to Bangladesh on
-                the international stage.
-              </p>
-              <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                I extend my heartfelt gratitude to all members, partners, and
-                stakeholders who continue to support our mission. Together, we
-                will write the next chapter in Bangladesh&apos;s squash
-                history.&quot;
-              </p>
-              <div className="mt-8 pt-6 border-t border-gray-300">
-                {/* Avatar Image */}
-                <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                  <Image
-                    src="/President.jpeg"
-                    alt="President"
-                    width={64}
-                    height={64}
-                    className="object-cover"
-                  />
-                </div>
-                <p className="text-xl font-bold text-gray-900">
-                  Maj Gen Md Hasan Uz Zaman (ndu, afwc, psc, MPhil)
-                </p>
-                <p className="text-gray-600">President, BSRF</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div className="border-t border-gray-200 my-12"></div>
+        {/* <div className="border-t border-gray-200 my-12"></div> */}
 
         {/* Executive Committee / Governing Body Section */}
-        <section id="executive-committee" className="mb-16 scroll-mt-24">
+        {/* <section id="executive-committee" className="mb-16 scroll-mt-24">
           <div className="mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center gap-3">
               <span className="w-1 h-12 bg-blue-600 rounded-full"></span>
@@ -391,10 +390,10 @@ const AboutPage = () => {
           </div>
         </section>
 
-        <div className="border-t border-gray-200 my-12"></div>
+        <div className="border-t border-gray-200 my-12"></div> */}
 
         {/* Sub-Committees / Advisors Section */}
-        <section id="sub-committees" className="mb-16 scroll-mt-24">
+        {/* <section id="sub-committees" className="mb-16 scroll-mt-24">
           <div className="mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center gap-3">
               <span className="w-1 h-12 bg-blue-600 rounded-full"></span>
@@ -424,7 +423,7 @@ const AboutPage = () => {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
       </div>
     </div>
   );

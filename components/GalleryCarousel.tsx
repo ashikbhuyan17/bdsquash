@@ -28,12 +28,10 @@ const galleryItems: GalleryItem[] = [
   {
     id: 1,
     image: '/hero-01.jpg',
-    title:
-      'Victory Day Squash Championship signals strong revival of Squash in Bangladesh',
-    description:
-      'AirAsia, in partnership with the Asian Hockey Federation (AHF), is set to launch the Dare to Dream Youth Leadership Forum, taking place from 22–24 December 2025 in Kuala Lumpur.',
+    title: "Trophy of 1st CAS Int'l Squash unveiled",
+    description: '',
     buttonText: 'READ MORE',
-    buttonLink: '/news/airasia-ahf-forum',
+    buttonLink: 'https://www.bssnews.net/sports/345937',
   },
   {
     id: 2,
@@ -42,7 +40,8 @@ const galleryItems: GalleryItem[] = [
     description:
       'The trophy unveiling and press conference for the 5th National Squash Championship 2025 were held in style at Bashundhara Sports City on Saturday.',
     buttonText: 'READ MORE',
-    buttonLink: '/news/bangladesh-victory',
+    buttonLink:
+      'https://www.daily-sun.com/printversion/details/832493?utm_source=chatgpt.com',
   },
   // {
   //   id: 3,
@@ -111,14 +110,14 @@ const GalleryCarousel = () => {
                       {/* Content */}
                       <div className="relative z-10">
                         {/* Icon/Logo */}
-                        <div className="flex items-center gap-3 mb-4 md:mb-6">
+                        {/* <div className="flex items-center gap-3 mb-4 md:mb-6">
                           <div className="w-10 h-10 md:w-12 md:h-12 bg-yellow-400 rounded-lg flex items-center justify-center">
                             <span className="text-xl md:text-2xl">✈️</span>
                           </div>
                           <span className="text-yellow-400 font-semibold text-xs md:text-sm uppercase tracking-wider">
                             News & Announcements
                           </span>
-                        </div>
+                        </div> */}
 
                         {/* Title */}
                         <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 leading-tight">
@@ -131,12 +130,13 @@ const GalleryCarousel = () => {
                         </p>
 
                         {/* Button */}
-                        {/* <a
+                        <a
                           href={item.buttonLink}
+                          target="_blank"
                           className="inline-block px-6 md:px-8 py-2.5 md:py-3 bg-transparent border-2 border-yellow-400 text-yellow-400 font-semibold text-sm md:text-base uppercase tracking-wider hover:bg-yellow-400 hover:text-gray-900 transition-all duration-300 transform hover:scale-105"
                         >
                           {item.buttonText}
-                        </a> */}
+                        </a>
                       </div>
                     </div>
 

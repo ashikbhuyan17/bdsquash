@@ -13,7 +13,7 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white text-gray-900 pt-[90px]">
       {/* Hero Section */}
-      <section className="relative w-full h-[300px] md:h-[400px] overflow-hidden bg-gradient-to-br from-green-600 via-green-700 to-green-800">
+      <section className="relative w-full h-[300px] md:h-[400px] overflow-hidden bg-gradient-to-br from-green-300 via-green-400 to-green-500">
         <div className="absolute inset-0 bg-black/10" />
         <div className="relative z-10 h-full flex items-center justify-center">
           <div className="text-center px-4 max-w-4xl mx-auto">

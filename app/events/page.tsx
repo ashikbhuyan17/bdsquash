@@ -42,33 +42,49 @@ interface CalendarEvent {
 const tournaments: Tournament[] = [
   {
     id: 1,
-    name: 'Bangladesh National Squash Championship 2025',
-    date: 'March 15-25, 2025',
-    location: 'Dhaka, Bangladesh',
-    status: 'upcoming',
+    name: '1st CAS International Squash 2026',
+    date: 'January 2-6, 2026',
+    location: 'Army Squash Complex & Bashundhara Sports City, Dhaka',
+    status: 'ongoing',
   },
   {
     id: 2,
-    name: 'South Asian Squash Championship',
-    date: 'February 10-18, 2025',
-    location: 'Kathmandu, Nepal',
-    status: 'ongoing',
-  },
-  {
-    id: 3,
-    name: 'Asian Junior Squash Championship',
-    date: 'April 5-15, 2025',
-    location: 'Kuala Lumpur, Malaysia',
+    name: '5th National Squash Championship 2025',
+    date: '2025',
+    location: 'Bashundhara Sports City and other venues, Dhaka',
     status: 'upcoming',
   },
-  {
-    id: 4,
-    name: 'National Team Selection Tournament',
-    date: 'February 1-8, 2025',
-    location: 'Chittagong, Bangladesh',
-    status: 'ongoing',
-  },
 ];
+// const tournaments: Tournament[] = [
+//   {
+//     id: 1,
+//     name: 'Bangladesh National Squash Championship 2025',
+//     date: 'March 15-25, 2025',
+//     location: 'Dhaka, Bangladesh',
+//     status: 'upcoming',
+//   },
+//   {
+//     id: 2,
+//     name: 'South Asian Squash Championship',
+//     date: 'February 10-18, 2025',
+//     location: 'Kathmandu, Nepal',
+//     status: 'ongoing',
+//   },
+//   {
+//     id: 3,
+//     name: 'Asian Junior Squash Championship',
+//     date: 'April 5-15, 2025',
+//     location: 'Kuala Lumpur, Malaysia',
+//     status: 'upcoming',
+//   },
+//   {
+//     id: 4,
+//     name: 'National Team Selection Tournament',
+//     date: 'February 1-8, 2025',
+//     location: 'Chittagong, Bangladesh',
+//     status: 'ongoing',
+//   },
+// ];
 
 const nationalChampionships: NationalChampionship[] = [
   {

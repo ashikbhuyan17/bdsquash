@@ -47,13 +47,6 @@ const tournaments: Tournament[] = [
     location: 'Army Squash Complex & Bashundhara Sports City, Dhaka',
     status: 'ongoing',
   },
-  {
-    id: 2,
-    name: '5th National Squash Championship 2025',
-    date: '2025',
-    location: 'Bashundhara Sports City and other venues, Dhaka',
-    status: 'upcoming',
-  },
 ];
 // const tournaments: Tournament[] = [
 //   {
@@ -89,74 +82,51 @@ const tournaments: Tournament[] = [
 const nationalChampionships: NationalChampionship[] = [
   {
     id: 1,
-    title: 'Bangladesh National Squash Championship',
-    year: '2024',
+    title: '5th National Squash Championship 2025',
+    year: '2025',
     venue: 'Dhaka',
   },
   {
     id: 2,
-    title: 'Bangladesh National Squash Championship',
-    year: '2023',
+    title: '4th National Squash Championship 2024',
+    year: '2024',
     venue: 'Chittagong',
   },
   {
     id: 3,
-    title: 'Bangladesh National Squash Championship',
-    year: '2022',
-    venue: 'Dhaka',
+    title: '6th Bangladesh International Squash Open 2025',
+    year: '2025',
+    venue: 'Chittagong',
   },
   {
     id: 4,
-    title: 'Bangladesh National Squash Championship',
-    year: '2021',
-    venue: 'Sylhet',
-  },
-  {
-    id: 5,
-    title: 'Bangladesh National Squash Championship',
-    year: '2020',
-    venue: 'Dhaka',
+    title: 'Victory Day Squash Championship 2025',
+    year: '2025',
+    venue: 'Chittagong',
   },
 ];
 
 const internationalEvents: InternationalEvent[] = [
   {
     id: 1,
-    eventName: 'Asian Squash Team Championship',
+    eventName: '6th Bangladesh International Squash Open 2025 ',
     country: 'Malaysia',
-    year: '2024',
+    year: '2025',
   },
   {
     id: 2,
-    eventName: 'South Asian Games',
+    eventName: 'Participating countries in recent major internationals',
     country: 'Nepal',
-    year: '2023',
-  },
-  {
-    id: 3,
-    eventName: 'Commonwealth Games',
-    country: 'United Kingdom',
-    year: '2022',
-  },
-  {
-    id: 4,
-    eventName: 'Asian Games',
-    country: 'Indonesia',
-    year: '2022',
-  },
-  {
-    id: 5,
-    eventName: 'World Squash Championship',
-    country: 'Egypt',
-    year: '2021',
+    year: '2025',
   },
 ];
 
 const calendarEvents: CalendarEvent[] = [
   {
     id: 1,
-    date: '2025-02-10',
-    eventName: 'South Asian Squash Championship',
+    date: 'Jan 2-6, 2026',
+    eventName:
+      '1st CAS International Squash — Dhaka Cantonment & Bashundhara Sports City. ',
     isUpcoming: true,
   },
   {
@@ -199,9 +169,9 @@ const calendarEvents: CalendarEvent[] = [
 
 const EventsPage = () => {
   return (
-    <div className="min-h-screen bg-white text-gray-900 pt-[90px]">
+    <div className="min-h-screen bg-white text-gray-900">
       {/* Hero Section */}
-      <section className="relative w-full h-[300px] md:h-[400px] overflow-hidden bg-gradient-to-br from-green-600 via-green-700 to-green-800">
+      <section className="relative w-full h-[300px] md:h-[400px] overflow-hidden bg-gradient-to-br from-green-300 via-green-400 to-green-500">
         <div className="absolute inset-0 bg-black/20" />
         <div className="relative z-10 h-full flex items-center justify-center">
           <div className="text-center px-4 max-w-4xl mx-auto">
@@ -294,10 +264,10 @@ const EventsPage = () => {
                       Year: {championship.year}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  {/* <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4" />
                     <span>Venue: {championship.venue}</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}
@@ -328,10 +298,10 @@ const EventsPage = () => {
                   {event.eventName}
                 </h3>
                 <div className="space-y-2 text-gray-600">
-                  <div className="flex items-center gap-2">
+                  {/* <div className="flex items-center gap-2">
                     <Globe className="w-4 h-4" />
                     <span className="font-medium">{event.country}</span>
-                  </div>
+                  </div> */}
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
                     <span>Year: {event.year}</span>

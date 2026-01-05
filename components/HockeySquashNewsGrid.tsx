@@ -110,7 +110,7 @@ const NewsCard: React.FC<{ article: NewsArticle; className?: string }> = ({
 };
 
 // Server Component - Main News Grid
-const NewsPage: React.FC = () => {
+const HockeySquashNewsGrid: React.FC = () => {
   const renderNewsGrid = (articles: NewsArticle[]) => {
     const gridItems = [];
     let index = 0;
@@ -147,7 +147,7 @@ const NewsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4  pt-[130px]">
+    <div className="min-h-screen bg-gray-50 p-4">
       <div className="container mx-auto">
         {/* Header */}
         <header className="mb-8">
@@ -166,4 +166,4 @@ const NewsPage: React.FC = () => {
   );
 };
 
-export default NewsPage;
+export default HockeySquashNewsGrid;

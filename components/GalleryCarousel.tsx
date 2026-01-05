@@ -27,8 +27,9 @@ interface GalleryItem {
 const galleryItems: GalleryItem[] = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1589487391730-58f20eb2c308?w=800&h=600&fit=crop',
-    title: 'AirAsia x AHF | Dare to Dream Youth Leadership Forum',
+    image: '/hero-01.jpg',
+    title:
+      'Victory Day Squash Championship signals strong revival of Squash in Bangladesh',
     description:
       'AirAsia, in partnership with the Asian Hockey Federation (AHF), is set to launch the Dare to Dream Youth Leadership Forum, taking place from 22–24 December 2025 in Kuala Lumpur.',
     buttonText: 'READ MORE',
@@ -36,31 +37,33 @@ const galleryItems: GalleryItem[] = [
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1556817411-58c45dd94e8c?w=800&h=600&fit=crop',
-    title: 'Bangladesh Hockey Team Victory',
+    image: '/hero-02.jpg',
+    title: '5th National Squash Championship 2025 trophy unveiled',
     description:
-      'Celebrating the triumphant victory of Bangladesh Hockey Team in the regional championship. A moment of pride for the nation.',
+      'The trophy unveiling and press conference for the 5th National Squash Championship 2025 were held in style at Bashundhara Sports City on Saturday.',
     buttonText: 'READ MORE',
     buttonLink: '/news/bangladesh-victory',
   },
-  {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=800&h=600&fit=crop',
-    title: 'International Hockey Championship 2025',
-    description:
-      'Join us for the most anticipated hockey event of the year. Teams from across Asia will compete for glory.',
-    buttonText: 'READ MORE',
-    buttonLink: '/news/championship-2025',
-  },
-  {
-    id: 4,
-    image: 'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=800&h=600&fit=crop',
-    title: 'Youth Training Camp',
-    description:
-      'Empowering the next generation of hockey players through intensive training and mentorship programs.',
-    buttonText: 'READ MORE',
-    buttonLink: '/news/youth-training',
-  },
+  // {
+  //   id: 3,
+  //   image:
+  //     'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=800&h=600&fit=crop',
+  //   title: 'International Hockey Championship 2025',
+  //   description:
+  //     'Join us for the most anticipated hockey event of the year. Teams from across Asia will compete for glory.',
+  //   buttonText: 'READ MORE',
+  //   buttonLink: '/news/championship-2025',
+  // },
+  // {
+  //   id: 4,
+  //   image:
+  //     'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=800&h=600&fit=crop',
+  //   title: 'Youth Training Camp',
+  //   description:
+  //     'Empowering the next generation of hockey players through intensive training and mentorship programs.',
+  //   buttonText: 'READ MORE',
+  //   buttonLink: '/news/youth-training',
+  // },
 ];
 
 // Gallery Carousel Component
@@ -113,7 +116,7 @@ const GalleryCarousel = () => {
                             <span className="text-xl md:text-2xl">✈️</span>
                           </div>
                           <span className="text-yellow-400 font-semibold text-xs md:text-sm uppercase tracking-wider">
-                            Latest News
+                            News & Announcements
                           </span>
                         </div>
 
@@ -128,12 +131,12 @@ const GalleryCarousel = () => {
                         </p>
 
                         {/* Button */}
-                        <a
+                        {/* <a
                           href={item.buttonLink}
                           className="inline-block px-6 md:px-8 py-2.5 md:py-3 bg-transparent border-2 border-yellow-400 text-yellow-400 font-semibold text-sm md:text-base uppercase tracking-wider hover:bg-yellow-400 hover:text-gray-900 transition-all duration-300 transform hover:scale-105"
                         >
                           {item.buttonText}
-                        </a>
+                        </a> */}
                       </div>
                     </div>
 

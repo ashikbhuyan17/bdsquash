@@ -10,16 +10,9 @@ export default function NotFound() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* 404 Number */}
         <div className="mb-8">
-          <h1 className="text-9xl md:text-[12rem] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-green-500 to-emerald-600 leading-none">
+          <h1 className="text-9xl md:text-[6rem] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-green-500 to-emerald-600 leading-none">
             404
           </h1>
-        </div>
-
-        {/* Icon */}
-        <div className="mb-8 flex justify-center">
-          <div className="w-32 h-32 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center shadow-lg">
-            <FileQuestion className="w-16 h-16 text-green-600" />
-          </div>
         </div>
 
         {/* Title and Description */}

@@ -14,65 +14,56 @@ interface MediaItem {
   image: string;
   count: number;
   type: 'photo' | 'video';
+  externalLink?: string;
 }
 
 // Sample media data - in production, this would come from a database or API
 const mediaData: MediaItem[] = [
   {
     id: 1,
-    title: 'Womens u18 asia cup 2025.',
-    image: '/Squash-Sports.jpg',
-    count: 130,
+    title: '6th Bangladesh International Squash Open 2025 concludes',
+    image: '/news-01.jpg',
+    count: 150,
     type: 'photo',
+    externalLink:
+      'https://www.daily-sun.com/printversion/details/816743?utm_source=chatgpt.com',
   },
   {
     id: 2,
-    title: 'Mens u18 asia cup 2025',
-    image: '/Squash-Sports.jpg',
-    count: 218,
+    title:
+      'Victory Day Squash Championship signals strong revival of Squash in Bangladesh',
+    image: '/news-02.jpg',
+    count: 120,
     type: 'photo',
+    externalLink:
+      'https://www.daily-sun.com/sports/847914?utm_source=chatgpt.com',
   },
   {
     id: 3,
-    title: 'Womens AHF Cup 2025',
-    image: '/Squash-Sports.jpg',
-    count: 130,
+    title: "IUB's Monika and Raihan shine in Victory Day Squash Tournament",
+    image: '/news-03.jpg',
+    count: 95,
     type: 'photo',
+    externalLink:
+      'https://www.dhakatribune.com/bangladesh/event/370623/iub%E2%80%99s-monika-and-raihan-shine-in-victory-day?utm_source=chatgpt.com',
   },
   {
     id: 4,
-    title: 'Mens AHF Cup 2025',
-    image: '/Squash-Sports.jpg',
-    count: 62,
+    title: '5th National Squash Championship 2025 trophy unveiled',
+    image: '/hero-02.jpg',
+    count: 180,
     type: 'photo',
+    externalLink:
+      'https://www.daily-sun.com/printversion/details/832493?utm_source=chatgpt.com',
   },
   {
     id: 5,
-    title: "Dhofar Municipality Men's Junior Asia Cup 2023",
-    image: '/Squash-Sports.jpg',
-    count: 85,
+    title: 'IUB shines bright in National Squash Championship 2024',
+    image: '/news-05.jpg',
+    count: 110,
     type: 'photo',
-  },
-  {
-    id: 6,
-    title: "INDIA Women's Junior Asia Cup 2023 CHAMPIONS",
-    image: '/Squash-Sports.jpg',
-    count: 120,
-    type: 'photo',
-  },
-  {
-    id: 7,
-    title: "Women's Hockey Match Highlights",
-    image: '/Squash-Sports.jpg',
-    count: 45,
-    type: 'video',
-  },
-  {
-    id: 8,
-    title: 'Thailand Team Match Coverage',
-    image: '/Squash-Sports.jpg',
-    count: 30,
-    type: 'video',
+    externalLink:
+      'https://www.tbsnews.net/economy/corporates/iub-shines-bright-national-squash-championship-2024-839501?utm_source=chatgpt.com',
   },
 ];
 

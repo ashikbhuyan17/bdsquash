@@ -196,7 +196,7 @@ const PlayersRankingsPage = () => {
     return coachesData.filter(
       (coach) =>
         coach.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        coach.role.toLowerCase().includes(searchQuery.toLowerCase())
+        coach.role.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [searchQuery]);
 
@@ -298,10 +298,10 @@ const PlayersRankingsPage = () => {
                     player.ranking === 1
                       ? 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-white group-hover:scale-110 group-hover:shadow-yellow-300/50'
                       : player.ranking === 2
-                      ? 'bg-gradient-to-br from-gray-300 to-gray-500 text-white group-hover:scale-110 group-hover:shadow-gray-300/50'
-                      : player.ranking === 3
-                      ? 'bg-gradient-to-br from-orange-400 to-orange-600 text-white group-hover:scale-110 group-hover:shadow-orange-300/50'
-                      : 'bg-gradient-to-br from-green-500 to-green-700 text-white group-hover:scale-110 group-hover:shadow-green-300/50'
+                        ? 'bg-gradient-to-br from-gray-300 to-gray-500 text-white group-hover:scale-110 group-hover:shadow-gray-300/50'
+                        : player.ranking === 3
+                          ? 'bg-gradient-to-br from-orange-400 to-orange-600 text-white group-hover:scale-110 group-hover:shadow-orange-300/50'
+                          : 'bg-gradient-to-br from-green-500 to-green-700 text-white group-hover:scale-110 group-hover:shadow-green-300/50'
                   }`}
                 >
                   <span className="relative z-10">#{player.ranking}</span>

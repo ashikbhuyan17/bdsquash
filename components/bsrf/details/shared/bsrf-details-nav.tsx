@@ -28,7 +28,7 @@ export function BsrfDetailsNav({ active }: { active?: BsrfNavKey }) {
 
   return (
     <>
-      <nav className="sticky top-0 z-[100] flex h-[72px] w-full items-center justify-between border-b border-bsrf-border bg-[rgba(10,10,10,0.92)] px-4 backdrop-blur-md sm:px-[5%] lg:px-4 xl:px-[8%]">
+      <nav className="sticky top-0 z-[100] flex h-[72px] w-full items-center justify-between border-b border-bsrf-border bg-[rgba(10,10,10,0.92)] px-4 backdrop-blur-md sm:px-[5%] lg:px-4 xl:h-[88px] xl:px-[8%]">
         <Link href="/" className="flex shrink-0 items-center gap-3.5">
           <span className="font-bebas text-[28px] leading-none tracking-wide text-bsrf-green">
             BSRF

@@ -207,19 +207,6 @@ export function BsrfGalleryDetails() {
                 ×
               </button>
 
-              <button
-                type="button"
-                aria-label="Previous"
-                className="lb-btn absolute left-[-26px] top-1/2 h-[52px] w-[52px] -translate-y-1/2 rounded-full border border-bsrf-border bg-[rgba(20,20,20,0.8)] text-white text-[22px] transition-colors duration-200 hover:border-bsrf-green hover:bg-bsrf-green hover:text-black flex items-center justify-center"
-                onClick={() =>
-                  setActive(
-                    (i) => (i - 1 + shown.length) % shown.length
-                  )
-                }
-              >
-                ‹
-              </button>
-
               <div className="relative aspect-[16/10] border border-bsrf-border bg-bsrf-card">
                 <div className="absolute inset-0">
                   <Placeholder
@@ -227,16 +214,29 @@ export function BsrfGalleryDetails() {
                     className="h-full w-full"
                   />
                 </div>
-              </div>
 
-              <button
-                type="button"
-                aria-label="Next"
-                className="absolute right-[-26px] top-1/2 h-[52px] w-[52px] -translate-y-1/2 rounded-full border border-bsrf-border bg-[rgba(20,20,20,0.8)] text-white text-[22px] transition-colors duration-200 hover:border-bsrf-green hover:bg-bsrf-green hover:text-black flex items-center justify-center"
-                onClick={() => setActive((i) => (i + 1) % shown.length)}
-              >
-                ›
-              </button>
+                <button
+                  type="button"
+                  aria-label="Previous"
+                  className="absolute left-3 top-1/2 z-10 flex h-[52px] w-[52px] -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-bsrf-border bg-[rgba(20,20,20,0.85)] text-[22px] text-white backdrop-blur-sm transition-colors duration-200 hover:border-bsrf-green hover:bg-bsrf-green hover:text-black"
+                  onClick={() =>
+                    setActive(
+                      (i) => (i - 1 + shown.length) % shown.length
+                    )
+                  }
+                >
+                  ‹
+                </button>
+
+                <button
+                  type="button"
+                  aria-label="Next"
+                  className="absolute right-3 top-1/2 z-10 flex h-[52px] w-[52px] -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-bsrf-border bg-[rgba(20,20,20,0.85)] text-[22px] text-white backdrop-blur-sm transition-colors duration-200 hover:border-bsrf-green hover:bg-bsrf-green hover:text-black"
+                  onClick={() => setActive((i) => (i + 1) % shown.length)}
+                >
+                  ›
+                </button>
+              </div>
 
               <div className="flex flex-wrap items-center justify-between gap-4 pt-4">
                 <span className="font-bebas text-[26px] tracking-[0.5px] text-white">

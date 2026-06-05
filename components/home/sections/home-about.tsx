@@ -22,7 +22,7 @@ export function HomeAbout() {
         </div>
         <h2
           id="about-h"
-          className="mb-6 text-base leading-[1.8] text-bsrf-muted"
+          className="mb-6 text-base leading-[1.8] text-white"
         >
           The Bangladesh Squash Rackets Federation is the national governing body
           for squash in Bangladesh, affiliated with the World Squash Federation.

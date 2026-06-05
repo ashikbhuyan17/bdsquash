@@ -37,7 +37,7 @@ export function HomeHero() {
         aria-hidden="true"
         className="pointer-events-none absolute bottom-[8%] right-[2%] select-none font-bebas text-[160px] leading-[0.8] tracking-[-6px] text-white opacity-[0.025] min-[981px]:text-[300px] min-[981px]:opacity-[0.03]"
       >
-        BSF
+        BSRF
       </div>
 
       <div className="relative z-[2] grid w-full grid-cols-1 items-center gap-9 min-[981px]:grid-cols-[1.45fr_0.75fr]">

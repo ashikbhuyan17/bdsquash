@@ -55,10 +55,10 @@ export function BsrfHome() {
       <main id="main">
         <HomeHero />
         <HomeStats />
-        <HomeNews />
-        <HomeEvents />
         <HomeAbout />
         <HomePresident />
+        <HomeNews />
+        <HomeEvents />
         <HomeCommittee />
         <HomeGallery />
         <HomePlayers />

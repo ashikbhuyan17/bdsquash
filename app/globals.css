@@ -52,7 +52,8 @@
   --card-foreground: oklch(0.13 0.028 261.692);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.13 0.028 261.692);
-  --primary: '#5BB39D';
+  /* valid forest green (was invalid string—breaks theme) */
+  --primary: oklch(0.45 0.1 160);
   --primary-foreground: oklch(0.985 0.002 247.839);
   --secondary: oklch(0.967 0.003 264.542);
   --secondary-foreground: oklch(0.21 0.034 264.665);
@@ -119,5 +120,15 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Admin data tables — reference: #F9FAFB header, #E5E7EB borders, neutral text */
+@layer components {
+  .admin-data-table {
+    @apply min-h-0 min-h-[500px] overflow-y-auto overflow-x-auto;
+  }
+  .admin-data-table [data-slot='table'] {
+    @apply w-full;
   }
 }

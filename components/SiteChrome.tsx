@@ -8,6 +8,14 @@ import Header from "@/components/shared-ui-components/Header"
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isAdmin = pathname?.startsWith("/admin") ?? false
+  const isHome = pathname === "/"
+  const isBsrfDetails =
+    pathname === "/events" ||
+    pathname === "/media-gallery" ||
+    pathname === "/players-rankings" ||
+    pathname === "/contact" ||
+    pathname === "/committee" ||
+    pathname === "/news"
 
   if (isAdmin) {
     // Document (window) scroll when content is tall; min-h-dvh + flex-1 main fills below header
@@ -21,6 +29,14 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         <main className="relative z-10 flex min-h-0 w-full min-w-0 flex-1 flex-col">{children}</main>
       </div>
     )
+  }
+
+  if (isHome) {
+    return <main className="relative z-10">{children}</main>
+  }
+
+  if (isBsrfDetails) {
+    return <main className="relative z-10">{children}</main>
   }
 
   return (

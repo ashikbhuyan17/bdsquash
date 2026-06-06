@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import Image, { StaticImageData } from "next/image";
 import { motion } from "framer-motion";
 
@@ -13,22 +12,17 @@ interface Testimonial {
 
 interface TestimonialCardProps {
 	testimonial: Testimonial;
-	index: number;
 	cardClassName?: string;
-	avatarClassName?: string;
 }
 
 interface KineticTestimonialProps {
 	testimonials?: Testimonial[];
 	className?: string;
 	cardClassName?: string;
-	avatarClassName?: string;
 	desktopColumns?: number;
 	tabletColumns?: number;
 	mobileColumns?: number;
 	speed?: number;
-	title?: string;
-	subtitle?: string;
 }
 
 interface TestimonialWithId extends Testimonial {
@@ -36,21 +30,8 @@ interface TestimonialWithId extends Testimonial {
 }
 
 const TestimonialCard: React.FC<TestimonialCardProps> = React.memo(
-	({ testimonial, index, cardClassName = "", avatarClassName = "" }) => {
+	({ testimonial, cardClassName = "" }) => {
 		const [isHovered, setIsHovered] = useState<boolean>(false);
-
-		const gradients = [
-			"from-pink-500 via-purple-500 to-orange-400",
-			"from-blue-500 via-teal-500 to-green-400",
-			"from-purple-500 via-pink-500 to-red-400",
-			"from-indigo-500 via-blue-500 to-cyan-400",
-			"from-orange-500 via-red-500 to-pink-400",
-			"from-emerald-500 via-blue-500 to-purple-400",
-			"from-rose-500 via-fuchsia-500 to-indigo-400",
-			"from-amber-500 via-orange-500 to-red-400",
-		];
-
-		const gradientClass = gradients[index % gradients.length];
 
 		return (
 			<div
@@ -98,13 +79,10 @@ const KineticTestimonial: React.FC<KineticTestimonialProps> = ({
 	testimonials = [],
 	className = "",
 	cardClassName = "",
-	avatarClassName = "",
 	desktopColumns = 6,
 	tabletColumns = 3,
 	mobileColumns = 2,
 	speed = 1,
-	title = "What developers are saying",
-	subtitle = "Hear from the developer community about their experience with ScrollX-UI",
 }) => {
 	const [actualMobileColumns, setActualMobileColumns] = useState(mobileColumns);
 
@@ -155,8 +133,6 @@ const KineticTestimonial: React.FC<KineticTestimonialProps> = ({
 		() => createColumns(desktopColumns),
 		[createColumns, desktopColumns]
 	);
-	const fiveColumnsData = useMemo(() => createColumns(5), [createColumns]);
-	const fourColumnsData = useMemo(() => createColumns(4), [createColumns]);
 	const tabletColumnsData = useMemo(
 		() => createColumns(tabletColumns),
 		[createColumns, tabletColumns]
@@ -194,16 +170,14 @@ const KineticTestimonial: React.FC<KineticTestimonialProps> = ({
 							<TestimonialCard
 								key={`${prefix}-${colIndex}-${testimonial.uniqueId}-${index}`}
 								testimonial={testimonial}
-								index={colIndex * 3 + index}
 								cardClassName={cardClassName}
-								avatarClassName={avatarClassName}
 							/>
 						))}
 					</div>
 				</div>
 			);
 		},
-		[speed, cardClassName, avatarClassName]
+		[speed, cardClassName]
 	);
 
 	return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 // Types
 interface NewsArticle {
@@ -68,10 +69,11 @@ const NewsCard: React.FC<{ article: NewsArticle; className?: string }> = ({
   const cardContent = (
     <>
       <div className="relative w-full h-full overflow-hidden">
-        <img
+        <Image
           src={article.imageUrl}
           alt={article.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
       </div>

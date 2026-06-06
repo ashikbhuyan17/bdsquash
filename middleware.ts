@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
 
   if (isLoginPage && token) {
     const adminUrl = request.nextUrl.clone()
-    adminUrl.pathname = "/admin"
+    adminUrl.pathname = "/admin/profile"
     adminUrl.search = ""
     return NextResponse.redirect(adminUrl)
   }

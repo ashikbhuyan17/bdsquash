@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useId, useRef, useState } from "react"
+import Image from "next/image"
 import { ImageUp, RefreshCw, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -119,9 +120,12 @@ export function ImageDataUrlUpload({
                 previewH
               )}
             >
-              <img
+              <Image
                 src={value}
                 alt=""
+                width={320}
+                height={128}
+                unoptimized
                 className="max-h-full max-w-full rounded-md object-contain shadow-sm ring-1 ring-black/5"
               />
             </div>

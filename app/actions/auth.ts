@@ -10,7 +10,7 @@ const SESSION_MAX_AGE = 60 * 60 * 24
 
 function getSafeRedirect(path: string | null | undefined): string {
   if (path && path.startsWith("/admin")) return path
-  return "/admin"
+  return "/admin/profile"
 }
 
 export async function loginAction(

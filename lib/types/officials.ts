@@ -1,13 +1,13 @@
-export type OfficialType = "Coach" | "Official"
+export type OfficialType = "Coach"
 
-export const OFFICIAL_TYPES: OfficialType[] = ["Coach", "Official"]
+export const COMMITTEE_MEMBER_TYPE: OfficialType = "Coach"
 
 export type Official = {
   officialId: number
   name: string
   phoneNumber: string
   email: string
-  officialType: OfficialType
+  officialType: string
   profileImage: string | null
   designation: string
   description: string
@@ -39,11 +39,6 @@ export type OfficialUpdatePayload = OfficialRegistrationPayload
 export type OfficialFilters = {
   pageNumber: number
   pageSize: number
-  officialType?: OfficialType
-}
-
-export type OfficialsFilterState = {
-  officialType: "all" | OfficialType
 }
 
 export type ApiDataResponse<T> = {

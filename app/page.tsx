@@ -6,6 +6,11 @@ import {
   mapGalleryItemsToHeroSlides,
 } from '@/lib/home/hero-gallery';
 import { fetchPublicMediaGallery } from '@/lib/media-gallery';
+import { loadHomeUpcomingEvents } from '@/lib/home/public-events';
+import { loadHomeGallery } from '@/lib/media-gallery/public-gallery';
+import { loadCommitteeMembers } from '@/lib/officials/public-officials';
+import { loadHomeFeaturedPlayers } from '@/lib/players/public-players';
+import { loadHomeNews } from '@/lib/news/public-news';
 
 export const metadata: Metadata = {
   title:
@@ -39,6 +44,25 @@ async function loadHeroSlides() {
 }
 
 export default async function Home() {
-  const heroSlides = await loadHeroSlides();
-  return <BsrfHome heroSlides={heroSlides} />;
+  const [heroSlides, homeNews, upcomingEvents, galleryItems, featuredPlayers, committeeMembers] =
+    await Promise.all([
+      loadHeroSlides(),
+      loadHomeNews(),
+      loadHomeUpcomingEvents(),
+      loadHomeGallery(),
+      loadHomeFeaturedPlayers(),
+      loadCommitteeMembers(),
+    ]);
+
+  return (
+    <BsrfHome
+      heroSlides={heroSlides}
+      newsFeatured={homeNews.featured}
+      newsSide={homeNews.side}
+      upcomingEvents={upcomingEvents}
+      galleryItems={galleryItems}
+      featuredPlayers={featuredPlayers}
+      committeeMembers={committeeMembers}
+    />
+  );
 }

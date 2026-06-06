@@ -9,6 +9,22 @@ import type {
   PlayerUpdatePayload,
 } from '@/lib/types/players';
 
+export async function fetchPublicPlayers(
+  pageNumber: number,
+  pageSize: number,
+): Promise<PlayerListData> {
+  const response = await getRequest<ApiDataResponse<PlayerListData>>(
+    `/players-for-user?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    { anonymous: true, next: { revalidate: 60 } },
+  );
+
+  if (!response.isValid || !response.data) {
+    throw new Error(response.message || 'Failed to load players.');
+  }
+
+  return response.data;
+}
+
 export async function fetchPlayers(
   pageNumber: number,
   pageSize: number,

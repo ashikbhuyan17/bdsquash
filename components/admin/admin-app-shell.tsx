@@ -12,7 +12,6 @@ import {
   // ImageIcon,
   ImagesIcon,
   // InfoIcon,
-  LayoutDashboardIcon,
   LogOutIcon,
   MenuIcon,
   // NewspaperIcon,
@@ -27,13 +26,13 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 const nav = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboardIcon },
+  // { href: "/admin", label: "Dashboard" },
   // { href: "/admin/banner", label: "Banner", icon: ImageIcon },
   // { href: "/admin/news", label: "News", icon: NewspaperIcon },
   { href: "/admin/event-types", label: "Event types", icon: CalendarDaysIcon },
   { href: "/admin/events", label: "Events", icon: CalendarIcon },
   { href: "/admin/players", label: "Players", icon: UsersIcon },
-  { href: "/admin/officials", label: "Officials", icon: UserCogIcon },
+  { href: "/admin/officials", label: "COMMITTEE", icon: UserCogIcon },
   { href: "/admin/gallery", label: "Gallery", icon: ImagesIcon },
   { href: "/admin/faqs", label: "FAQs", icon: CircleHelpIcon },
   // { href: "/admin/about", label: "About", icon: InfoIcon },
@@ -47,7 +46,7 @@ const titles: Record<string, string> = {
   "/admin/event-types": "Event types",
   "/admin/events": "Events",
   "/admin/players": "Player rankings",
-  "/admin/officials": "Coaches & officials",
+  "/admin/officials": "COMMITTEE",
   "/admin/gallery": "Media gallery",
   "/admin/faqs": "FAQs",
   "/admin/about": "About section",
@@ -61,7 +60,7 @@ const subtitles: Record<string, string> = {
   "/admin/event-types": "Manage event categories for tournaments and listings.",
   "/admin/events": "Create events, set schedules, and filter by status or type.",
   "/admin/players": "Register players, rankings, clubs, and profile details.",
-  "/admin/officials": "Register coaches and officials with profile details.",
+  "/admin/officials": "Register and manage federation committee members.",
   "/admin/gallery": "View album entries and public gallery links.",
   "/admin/faqs": "Create and manage frequently asked questions.",
   "/admin/about": "Manage mission, vision, and leadership content.",
@@ -135,9 +134,8 @@ export function AdminAppShell({ children }: { children: React.ReactNode }) {
             <nav className="flex flex-col gap-1 px-2" aria-label="Admin">
               {nav.map((item) => {
                 const active =
-                  item.href === "/admin"
-                    ? pathname === "/admin"
-                    : pathname === item.href || pathname.startsWith(`${item.href}/`)
+                  pathname === item.href ||
+                  pathname.startsWith(`${item.href}/`)
                 const Icon = item.icon
                 return (
                   <Link

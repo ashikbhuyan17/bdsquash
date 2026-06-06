@@ -1,108 +1,19 @@
-'use client'
-
-import React, { useMemo, useState } from 'react'
+import Link from 'next/link'
+import { CalendarDaysIcon } from 'lucide-react'
+import React from 'react'
+import { HomeImage } from '@/components/home/home-image'
+import {
+  buildEventsPageHref,
+  getEventRowStatusLabel,
+  type PublicEventCard,
+} from '@/lib/events/public-events'
+import type { EventStatus } from '@/lib/types/events'
+import type { EventType } from '@/lib/types/event-types'
+import { cn } from '@/lib/utils'
 import { BsrfShell } from './shared/bsrf-shell'
 import { BsrfDetailsNav } from './shared/bsrf-details-nav'
 import { BsrfDetailsFooter } from './shared/bsrf-details-footer'
 import { BsrfDetailsPageHero } from './shared/bsrf-details-page-hero'
-import { cn } from '@/lib/utils'
-
-type EventCategory = 'INTERNATIONAL' | 'NATIONAL' | 'JUNIOR' | 'DEVELOPMENT'
-
-type EventItem = {
-  d: string
-  m: string
-  y: string
-  cat: EventCategory
-  name: string
-  loc: string
-  desc?: string
-  status?: 'Registration Open' | 'Coming Soon'
-}
-
-const FEATURED: EventItem = {
-  d: '15',
-  m: 'NOV',
-  y: '2026',
-  cat: 'INTERNATIONAL',
-  name: '6th Bangladesh International Squash Open',
-  loc: 'Squash Complex, 144 Gulshan Avenue, Dhaka',
-  desc: `The flagship event of the BSRF calendar returns, welcoming top-ranked players from across Asia. Five days of elite competition across men’s and women’s draws, with qualifying rounds open to ranked national players.`,
-}
-
-const UPCOMING: EventItem[] = [
-  {
-    d: '06',
-    m: 'DEC',
-    y: '2026',
-    cat: 'NATIONAL',
-    name: 'Victory Day Squash Championship 2026',
-    loc: 'BSRF Courts, Dhaka',
-    status: 'Registration Open',
-  },
-  {
-    d: '20',
-    m: 'JAN',
-    y: '2027',
-    cat: 'JUNIOR',
-    name: 'National Junior Ranking Series — Leg 1',
-    loc: 'Gulshan-1, Dhaka',
-    status: 'Registration Open',
-  },
-  {
-    d: '14',
-    m: 'FEB',
-    y: '2027',
-    cat: 'NATIONAL',
-    name: '6th National Squash Championship',
-    loc: 'Chittagong Squash Centre',
-    status: 'Coming Soon',
-  },
-  {
-    d: '08',
-    m: 'MAR',
-    y: '2027',
-    cat: 'DEVELOPMENT',
-    name: 'Inter-Club Team Championship',
-    loc: 'Army Squash Academy, Dhaka',
-    status: 'Coming Soon',
-  },
-]
-
-const PAST: EventItem[] = [
-  {
-    d: '30',
-    m: 'JUL',
-    y: '2025',
-    cat: 'INTERNATIONAL',
-    name: '5th Bangladesh International Squash Open',
-    loc: 'Squash Complex, Gulshan, Dhaka',
-  },
-  {
-    d: '16',
-    m: 'DEC',
-    y: '2025',
-    cat: 'NATIONAL',
-    name: 'Victory Day Squash Championship 2025',
-    loc: 'BSRF Courts, Dhaka',
-  },
-  {
-    d: '12',
-    m: 'JUN',
-    y: '2025',
-    cat: 'NATIONAL',
-    name: '5th National Squash Championship',
-    loc: 'Dhaka Squash Club',
-  },
-  {
-    d: '28',
-    m: 'MAY',
-    y: '2025',
-    cat: 'JUNIOR',
-    name: 'National Junior Ranking Series — Finals',
-    loc: 'Gulshan-1, Dhaka',
-  },
-]
 
 function Placeholder({
   label,
@@ -149,44 +60,82 @@ function ErCta({
   children,
   variant = 'solid',
   className,
-  onClick,
 }: {
   children: React.ReactNode
   variant?: 'solid' | 'ghost'
   className?: string
-  onClick?: () => void
 }) {
   if (variant === 'ghost') {
     return (
-      <button
-        type="button"
-        onClick={onClick}
+      <span
         className={cn(
-          'rounded-[2px] border border-bsrf-green bg-transparent px-[18px] py-[10px] text-[12px] font-bold uppercase tracking-[0.08em] text-bsrf-green whitespace-nowrap transition-colors hover:bg-bsrf-green hover:text-black hover:filter-none',
+          'inline-flex rounded-[2px] border border-bsrf-green bg-transparent px-[18px] py-[10px] text-[12px] font-bold uppercase tracking-[0.08em] text-bsrf-green whitespace-nowrap',
           className
         )}
       >
         {children}
-      </button>
+      </span>
     )
   }
 
   return (
-    <button
-      type="button"
-      onClick={onClick}
+    <span
       className={cn(
-        'rounded-[2px] border border-bsrf-green bg-bsrf-green px-[18px] py-[10px] text-[12px] font-bold uppercase tracking-[0.08em] text-black whitespace-nowrap transition-all hover:brightness-[1.1]',
+        'inline-flex rounded-[2px] border border-bsrf-green bg-bsrf-green px-[18px] py-[10px] text-[12px] font-bold uppercase tracking-[0.08em] text-black whitespace-nowrap',
         className
       )}
     >
       {children}
-    </button>
+    </span>
   )
 }
 
-function EventRow({ e, past }: { e: EventItem; past: boolean }) {
-  const isOpen = e.status === 'Registration Open'
+function EventsEmptyState({
+  activeStatus,
+  activeEventTypeId,
+  eventTypes,
+}: {
+  activeStatus: EventStatus
+  activeEventTypeId?: number
+  eventTypes: EventType[]
+}) {
+  const typeName = eventTypes.find(
+    (type) => type.eventTypeId === activeEventTypeId
+  )?.name
+
+  return (
+    <div
+      className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-bsrf-border bg-bsrf-card/40 px-6 py-16 text-center"
+      role="status"
+    >
+      <span className="inline-flex size-14 items-center justify-center rounded-full border border-bsrf-border bg-bsrf-primary text-bsrf-muted">
+        <CalendarDaysIcon className="size-6" aria-hidden="true" />
+      </span>
+      <div className="max-w-md space-y-2">
+        <h3 className="font-bebas text-3xl tracking-wide text-white">
+          No events found
+        </h3>
+        <p className="text-sm leading-relaxed text-bsrf-muted">
+          {activeEventTypeId
+            ? `No ${activeStatus.toLowerCase()} events are listed for ${typeName ?? 'this type'} right now.`
+            : `No ${activeStatus.toLowerCase()} events are available at the moment. Please check back soon.`}
+        </p>
+      </div>
+      {activeEventTypeId ? (
+        <Link
+          href={buildEventsPageHref(activeStatus)}
+          className="mt-2 inline-flex items-center rounded-full border border-bsrf-green px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.1em] text-bsrf-green transition-all hover:bg-bsrf-green hover:text-black"
+        >
+          View all event types
+        </Link>
+      ) : null}
+    </div>
+  )
+}
+
+function EventRow({ event, past }: { event: PublicEventCard; past: boolean }) {
+  const rowStatus = getEventRowStatusLabel(event.status)
+  const isOpen = rowStatus === 'Registration Open'
 
   return (
     <article
@@ -205,25 +154,25 @@ function EventRow({ e, past }: { e: EventItem; past: boolean }) {
             past ? 'text-bsrf-muted' : 'text-bsrf-green'
           )}
         >
-          {e.d}
+          {event.d}
         </div>
         <div className="text-left min-[981px]:text-center">
           <div className="text-[11px] font-medium uppercase tracking-[0.1em] text-bsrf-muted">
-            {e.m}
+            {event.m}
           </div>
-          <div className="text-[11px] text-bsrf-muted">{e.y}</div>
+          <div className="text-[11px] text-bsrf-muted">{event.y}</div>
         </div>
       </div>
 
       <div className="flex flex-col gap-[6px]">
-        <Chip variant={past ? 'mutedBorder' : 'green'}>{e.cat}</Chip>
+        <Chip variant={past ? 'mutedBorder' : 'green'}>{event.cat}</Chip>
 
         <div className="text-[16px] font-bold leading-[1.25] text-white min-[981px]:text-[17px]">
-          {e.name}
+          {event.name}
         </div>
         <div className="flex flex-wrap items-center gap-[8px] text-[13px] text-bsrf-muted">
           <span>📍</span>
-          <span>{e.loc}</span>
+          <span>{event.loc}</span>
         </div>
       </div>
 
@@ -238,7 +187,7 @@ function EventRow({ e, past }: { e: EventItem; past: boolean }) {
                 isOpen ? 'text-bsrf-green' : 'text-bsrf-muted'
               )}
             >
-              {e.status}
+              {rowStatus}
             </span>
             <ErCta>{isOpen ? 'Register' : 'Details'}</ErCta>
           </>
@@ -248,12 +197,24 @@ function EventRow({ e, past }: { e: EventItem; past: boolean }) {
   )
 }
 
-export function BsrfEventsDetails() {
-  const [view, setView] = useState<'upcoming' | 'past'>('upcoming')
+type BsrfEventsDetailsProps = {
+  activeStatus: EventStatus
+  activeEventTypeId?: number
+  eventTypes: EventType[]
+  featured: PublicEventCard | null
+  events: PublicEventCard[]
+}
 
-  const list = useMemo(() => {
-    return view === 'upcoming' ? UPCOMING : PAST
-  }, [view])
+export function BsrfEventsDetails({
+  activeStatus,
+  activeEventTypeId,
+  eventTypes,
+  featured,
+  events,
+}: BsrfEventsDetailsProps) {
+  const isPast = activeStatus === 'Past'
+  const showFeatured = !isPast && featured != null
+  const showListEmpty = events.length === 0
 
   return (
     <BsrfShell>
@@ -279,11 +240,20 @@ export function BsrfEventsDetails() {
         />
 
         <section className="px-4 pt-10 pb-16 sm:px-[5%] md:px-[8%] md:pt-14 md:pb-20 lg:pt-[56px] lg:pb-[90px]">
-          {view === 'upcoming' ? (
+          {showFeatured ? (
             <div className="event-featured mb-8 grid grid-cols-1 gap-px border border-bsrf-border bg-bsrf-border min-[981px]:mb-12 min-[981px]:grid-cols-[1.1fr_1fr]">
               <div className="ef-media relative min-h-[220px] bg-bsrf-card sm:min-h-[280px] min-[981px]:min-h-[320px]">
                 <div className="absolute inset-0">
-                  <Placeholder label="Event Photo" />
+                  {featured.imageUrl ? (
+                    <HomeImage
+                      src={featured.imageUrl}
+                      alt={featured.name}
+                      fallbackLabel="Event Photo"
+                      priority
+                    />
+                  ) : (
+                    <Placeholder label="Event Photo" />
+                  )}
                 </div>
                 <div className="ef-tag absolute left-[18px] top-[18px] z-[2]">
                   <Chip variant="red">FEATURED</Chip>
@@ -291,29 +261,31 @@ export function BsrfEventsDetails() {
               </div>
 
               <div className="ef-body flex flex-col justify-center gap-3 bg-bsrf-card p-5 sm:gap-4 sm:p-6 min-[981px]:p-10">
-                <Chip variant="green">{FEATURED.cat}</Chip>
+                <Chip variant="green">{featured.cat}</Chip>
 
                 <div className="ef-date flex items-baseline gap-[10px]">
                   <span className="font-bebas text-[56px] leading-[0.9] text-bsrf-green">
-                    {FEATURED.d}
+                    {featured.d}
                   </span>
                   <span className="text-[14px] uppercase tracking-[0.1em] text-bsrf-muted">
-                    {FEATURED.m} {FEATURED.y}
+                    {featured.m} {featured.y}
                   </span>
                 </div>
 
                 <h2 className="font-bebas text-[clamp(30px,4vw,46px)] leading-[1] text-white">
-                  {FEATURED.name}
+                  {featured.name}
                 </h2>
 
                 <div className="ef-loc flex items-center gap-2 text-[14px] text-bsrf-muted">
                   <span>📍</span>
-                  <span>{FEATURED.loc}</span>
+                  <span>{featured.loc}</span>
                 </div>
 
-                <p className="ef-desc max-w-[52ch] text-[15px] leading-[1.7] text-bsrf-muted">
-                  {FEATURED.desc}
-                </p>
+                {featured.desc ? (
+                  <p className="ef-desc line-clamp-4 max-w-[52ch] text-[15px] leading-[1.7] text-bsrf-muted">
+                    {featured.desc}
+                  </p>
+                ) : null}
 
                 <div className="ef-actions mt-[6px] flex flex-wrap gap-[12px]">
                   <ErCta>Register Now</ErCta>
@@ -328,39 +300,88 @@ export function BsrfEventsDetails() {
             role="tablist"
             aria-label="Event timeline"
           >
-            <button
-              role="tab"
-              aria-selected={view === 'upcoming'}
-              className={cn(
-                'tab whitespace-nowrap border-b-2 border-transparent -mb-[1px] bg-transparent px-4 py-3 text-[12px] font-semibold uppercase tracking-[0.12em] transition-colors hover:text-white sm:px-[22px] sm:py-[14px] sm:text-[13px]',
-                view === 'upcoming'
-                  ? 'text-bsrf-green border-b-bsrf-green'
-                  : 'text-bsrf-muted'
-              )}
-              onClick={() => setView('upcoming')}
-              type="button"
-            >
-              Upcoming
-            </button>
-            <button
-              role="tab"
-              aria-selected={view === 'past'}
-              className={cn(
-                'tab whitespace-nowrap border-b-2 border-transparent -mb-[1px] bg-transparent px-4 py-3 text-[12px] font-semibold uppercase tracking-[0.12em] transition-colors hover:text-white sm:px-[22px] sm:py-[14px] sm:text-[13px]',
-                view === 'past'
-                  ? 'text-bsrf-green border-b-bsrf-green'
-                  : 'text-bsrf-muted'
-              )}
-              onClick={() => setView('past')}
-              type="button"
-            >
-              Past Events
-            </button>
+            {(['Upcoming', 'Past'] as const).map((status) => {
+              const isActive =
+                status === 'Past'
+                  ? activeStatus === 'Past'
+                  : activeStatus !== 'Past'
+              const href = buildEventsPageHref(
+                status === 'Past' ? 'Past' : 'Upcoming',
+                activeEventTypeId
+              )
+
+              return (
+                <Link
+                  key={status}
+                  href={href}
+                  scroll={false}
+                  role="tab"
+                  aria-selected={isActive}
+                  className={cn(
+                    'tab whitespace-nowrap border-b-2 border-transparent -mb-[1px] bg-transparent px-4 py-3 text-[12px] font-semibold uppercase tracking-[0.12em] transition-colors hover:text-white sm:px-[22px] sm:py-[14px] sm:text-[13px]',
+                    isActive
+                      ? 'text-bsrf-green border-b-bsrf-green'
+                      : 'text-bsrf-muted'
+                  )}
+                >
+                  {status === 'Past' ? 'Past Events' : 'Upcoming'}
+                </Link>
+              )
+            })}
           </div>
 
+          {eventTypes.length > 0 ? (
+            <div
+              className="mb-6 flex flex-wrap gap-2 md:mb-9 md:gap-[10px]"
+              role="tablist"
+              aria-label="Filter events by type"
+            >
+              <Link
+                href={buildEventsPageHref(activeStatus)}
+                scroll={false}
+                role="tab"
+                aria-selected={activeEventTypeId === undefined}
+                className={cn(
+                  'whitespace-nowrap rounded-full border border-bsrf-border bg-transparent px-[18px] py-[9px] text-[12px] font-semibold uppercase tracking-[0.1em] text-bsrf-muted transition-all hover:border-[#444] hover:text-white',
+                  activeEventTypeId === undefined &&
+                    'border-bsrf-green bg-bsrf-green text-black'
+                )}
+              >
+                All
+              </Link>
+              {eventTypes.map((type) => {
+                const isActive = activeEventTypeId === type.eventTypeId
+                const href = buildEventsPageHref(activeStatus, type.eventTypeId)
+
+                return (
+                  <Link
+                    key={type.eventTypeId}
+                    href={href}
+                    scroll={false}
+                    role="tab"
+                    aria-selected={isActive}
+                    className={cn(
+                      'whitespace-nowrap rounded-full border border-bsrf-border bg-transparent px-[18px] py-[9px] text-[12px] font-semibold uppercase tracking-[0.1em] text-bsrf-muted transition-all hover:border-[#444] hover:text-white',
+                      isActive && 'border-bsrf-green bg-bsrf-green text-black'
+                    )}
+                  >
+                    {type.name}
+                  </Link>
+                )
+              })}
+            </div>
+          ) : null}
+
           <div className="events-list flex flex-col gap-[14px]">
-            {list.map((e) => (
-              <EventRow key={e.name} e={e} past={view === 'past'} />
+            {showListEmpty ? (
+              <EventsEmptyState
+                activeStatus={activeStatus}
+                activeEventTypeId={activeEventTypeId}
+                eventTypes={eventTypes}
+              />
+            ) : null}
+            {events.map((event) => (
+              <EventRow key={event.id} event={event} past={isPast} />
             ))}
           </div>
         </section>
@@ -370,4 +391,3 @@ export function BsrfEventsDetails() {
     </BsrfShell>
   )
 }
-

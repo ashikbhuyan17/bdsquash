@@ -1,7 +1,13 @@
 import Link from 'next/link';
-import { HOME_FEATURED_NEWS, HOME_NEWS_SIDE } from '@/lib/home/data';
 import { HomeImage } from '@/components/home/home-image';
-export function HomeNews() {
+import type { NewsArticle } from '@/lib/news/data';
+
+type HomeNewsProps = {
+  featured: NewsArticle;
+  side: NewsArticle[];
+};
+
+export function HomeNews({ featured, side }: HomeNewsProps) {
   return (
     <section className="px-4 py-12 sm:px-[5%] md:px-[8%] md:py-20" id="news">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
@@ -19,34 +25,38 @@ export function HomeNews() {
         <article className="flex flex-col bg-bsrf-card transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(200,244,0,0.06)]">
           <div className="h-[280px]">
             <HomeImage
-              src={HOME_FEATURED_NEWS.image}
-              alt={HOME_FEATURED_NEWS.title}
+              src={featured.image}
+              alt={featured.title}
               fallbackLabel="Featured"
             />
           </div>
           <div className="flex flex-col gap-3 p-6">
             <span className="inline-block self-start bg-bsrf-red px-2.5 py-[5px] text-[10px] font-semibold uppercase tracking-[0.1em] text-white">
-              {HOME_FEATURED_NEWS.cat}
+              {featured.cat}
             </span>
             <h3 className="font-bebas text-[32px] leading-[1.12] tracking-wide text-white">
-              {HOME_FEATURED_NEWS.title}
+              {featured.title}
             </h3>
-            <span className="text-xs text-bsrf-muted">{HOME_FEATURED_NEWS.date}</span>
+            <span className="text-xs text-bsrf-muted">{featured.date}</span>
             <a
               className="text-xs uppercase tracking-[0.08em] text-bsrf-green"
-              href={HOME_FEATURED_NEWS.link}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={featured.link}
+              target={featured.link.startsWith('http') ? '_blank' : undefined}
+              rel={
+                featured.link.startsWith('http')
+                  ? 'noopener noreferrer'
+                  : undefined
+              }
             >
               Read More →
             </a>
           </div>
         </article>
         <div className="flex flex-col gap-px bg-bsrf-border">
-          {HOME_NEWS_SIDE.map((item) => (
+          {side.map((item) => (
             <article
               className="flex flex-1 gap-4 bg-bsrf-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(200,244,0,0.06)]"
-              key={item.title}
+              key={item.id}
             >
               <div className="h-[100px] w-[120px] min-w-[120px]">
                 <HomeImage

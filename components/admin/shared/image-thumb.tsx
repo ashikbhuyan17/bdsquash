@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import { ImageOff } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -39,9 +40,12 @@ export function ImageThumb({ src, alt, className }: ImageThumbProps) {
   }
 
   return (
-    <img
+    <Image
       src={src}
       alt={alt}
+      width={48}
+      height={48}
+      unoptimized
       onError={() => setFailed(true)}
       className={cn(
         "size-10 shrink-0 rounded-md border object-cover sm:size-12",

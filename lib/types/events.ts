@@ -49,6 +49,13 @@ export type EventFilters = {
   eventStatus?: EventStatus
 }
 
+export type PublicEventFilters = {
+  pageNumber: number
+  pageSize: number
+  eventTypeId?: number
+  eventStatus?: EventStatus
+}
+
 export type ApiDataResponse<T> = {
   isValid: boolean
   data: T

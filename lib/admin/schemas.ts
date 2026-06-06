@@ -26,10 +26,16 @@ export const bdPhoneNumberSchema = z
   .min(1, "Phone number is required")
   .regex(BD_PHONE_REGEX, "Phone number must be 11 digits and start with 01")
 
+const optionalDescription = (max: number) =>
+  z
+    .string()
+    .trim()
+    .max(max, `Description must not exceed ${max} characters`)
+
 export const bannerFormSchema = z.object({
   image: imageDataUrl,
   title: z.string().min(2, "Title is too short").max(200),
-  description: z.string().min(2).max(2000),
+  description: optionalDescription(2000),
   bannerLink: link,
   active: z.boolean(),
 })
@@ -38,7 +44,7 @@ export const newsFormSchema = z.object({
   newsDate: z.string().min(1, "Date is required"),
   image: imageDataUrl,
   title: z.string().min(2).max(200),
-  description: z.string().min(2).max(2000),
+  description: optionalDescription(2000),
   newsLink: link,
   active: z.boolean(),
 })
@@ -64,11 +70,7 @@ export const playerFormSchema = z.object({
     message: "Gender is required",
   }),
   worldRanking: z.string().trim().min(1, "World ranking is required"),
-  description: z
-    .string()
-    .trim()
-    .min(1, "Description is required")
-    .max(4000, "Description must not exceed 4000 characters"),
+  description: optionalDescription(4000),
   profileLink: z
     .string()
     .trim()
@@ -94,10 +96,11 @@ export const mediaGalleryFormSchema = z.object({
     .trim()
     .url("Please enter a valid link")
     .or(z.literal("")),
-  description: z
+  title: z
     .string()
     .trim()
-    .max(4000, "Description must not exceed 4000 characters"),
+    .max(200, "Title must not exceed 200 characters"),
+  description: optionalDescription(4000),
   isActive: z.boolean(),
 })
 
@@ -138,11 +141,7 @@ export const eventTypeFormSchema = z.object({
     .min(1, "Name is required")
     .max(120, "Name must not exceed 120 characters"),
   image: z.string(),
-  description: z
-    .string()
-    .trim()
-    .min(1, "Description is required")
-    .max(2000, "Description must not exceed 2000 characters"),
+  description: optionalDescription(2000),
   isActive: z.boolean(),
 })
 
@@ -157,11 +156,7 @@ export const eventFormSchema = z.object({
     .max(200, "Name must not exceed 200 characters"),
   startDate: z.string().min(1, "Start date is required"),
   endDate: z.string().min(1, "End date is required"),
-  description: z
-    .string()
-    .trim()
-    .min(1, "Description is required")
-    .max(4000, "Description must not exceed 4000 characters"),
+  description: optionalDescription(4000),
   address: z
     .string()
     .trim()
@@ -203,17 +198,12 @@ export const officialFormSchema = z.object({
     .min(1, "Email is required")
     .email("Please enter a valid email address"),
   phoneNumber: bdPhoneNumberSchema,
-  officialType: z.string().min(1, "Official type is required"),
   designation: z
     .string()
     .trim()
     .min(1, "Designation is required")
     .max(200, "Designation must not exceed 200 characters"),
-  description: z
-    .string()
-    .trim()
-    .min(1, "Description is required")
-    .max(4000, "Description must not exceed 4000 characters"),
+  description: optionalDescription(4000),
   profileLink: z
     .string()
     .trim()

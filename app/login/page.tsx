@@ -12,7 +12,7 @@ type LoginPageProps = {
 
 function getRedirectPath(redirect: string | undefined): string {
   if (redirect && redirect.startsWith("/admin")) return redirect
-  return "/admin"
+  return "/admin/profile"
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { BsrfLogo } from '@/components/bsrf/shared/bsrf-logo';
+import { BsrfTutorialButton } from '@/components/bsrf/shared/bsrf-tutorial-button';
 import { NavAuthActions } from '@/components/auth/nav-auth-actions';
 import { HOME_NAV } from '@/lib/home/data';
 import { cn } from '@/lib/utils';
@@ -40,7 +41,10 @@ export function HomeNavbar() {
             </li>
           ))}
         </ul>
-        <NavAuthActions variant="bsrf" layout="desktop" />
+        <div className="hidden items-center gap-3 md:flex">
+          <BsrfTutorialButton />
+          <NavAuthActions variant="bsrf" layout="desktop" />
+        </div>
         <button
           type="button"
           className="cursor-pointer border-none bg-transparent text-2xl text-white lg:hidden"
@@ -77,6 +81,10 @@ export function HomeNavbar() {
             </a>
           )
         )}
+        <BsrfTutorialButton
+          mobile
+          onNavigate={() => setMenuOpen(false)}
+        />
         <NavAuthActions
           variant="bsrf"
           layout="mobile"

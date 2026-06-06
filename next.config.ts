@@ -1,12 +1,33 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
   serverActions: {
     bodySizeLimit: "10mb",
   },
   images: {
-    domains: ["images.unsplash.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "api.bdsquash.org",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "bdsquash.org",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "www.bdsquash.org",
+        pathname: "/**",
+      },
+    ],
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig

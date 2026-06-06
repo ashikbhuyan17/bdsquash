@@ -37,10 +37,10 @@ export async function updateAdminProfileAction(
   }
 
   try {
-    await saveAdminInformation(payload)
+    const result = await saveAdminInformation(payload)
     revalidatePath("/", "layout")
     revalidatePath("/admin/profile")
-    return { success: "Profile updated successfully." }
+    return { success: result.message }
   } catch (error) {
     return {
       error:

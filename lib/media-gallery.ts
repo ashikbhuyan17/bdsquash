@@ -1,6 +1,10 @@
-import "server-only"
+import 'server-only';
 
-import { getRequest, patchRequest, postRequest } from "@/lib/fetch"
+import {
+  toApiMutationResult,
+  type ApiMutationResult,
+} from '@/lib/api-response';
+import { getRequest, patchRequest, postRequest } from '@/lib/fetch';
 import type {
   ApiDataResponse,
   MediaGalleryCreatePayload,
@@ -8,94 +12,125 @@ import type {
   MediaGalleryItem,
   MediaGalleryListData,
   MediaGalleryUpdatePayload,
-} from "@/lib/types/media-gallery"
+  PublicMediaGalleryFilters,
+} from '@/lib/types/media-gallery';
 
 function buildMediaGalleryQuery(filters: MediaGalleryFilters): string {
-  const params = new URLSearchParams()
-  params.set("pageNumber", String(filters.pageNumber))
-  params.set("pageSize", String(filters.pageSize))
+  const params = new URLSearchParams();
+  params.set('pageNumber', String(filters.pageNumber));
+  params.set('pageSize', String(filters.pageSize));
 
   if (filters.galleryType) {
-    params.set("galleryType", filters.galleryType)
+    params.set('galleryType', filters.galleryType);
   }
   if (filters.category) {
-    params.set("category", filters.category)
+    params.set('category', filters.category);
   }
   if (filters.isActive !== undefined) {
-    params.set("isActive", String(filters.isActive))
+    params.set('isActive', String(filters.isActive));
   }
 
-  return `/media-gallery?${params.toString()}`
+  return `/media-gallery?${params.toString()}`;
+}
+
+function buildPublicMediaGalleryQuery(
+  filters: PublicMediaGalleryFilters,
+): string {
+  const params = new URLSearchParams();
+  params.set('pageNumber', String(filters.pageNumber));
+  params.set('pageSize', String(filters.pageSize));
+
+  if (filters.galleryType) {
+    params.set('galleryType', filters.galleryType);
+  }
+  if (filters.category) {
+    params.set('category', filters.category);
+  }
+
+  return `/media-gallery/users?${params.toString()}`;
+}
+
+export async function fetchPublicMediaGallery(
+  filters: PublicMediaGalleryFilters,
+): Promise<MediaGalleryListData> {
+  const response = await getRequest<ApiDataResponse<MediaGalleryListData>>(
+    buildPublicMediaGalleryQuery(filters),
+    { anonymous: true, next: { revalidate: 60 } },
+  );
+
+  if (!response.isValid || !response.data) {
+    throw new Error(response.message || 'Failed to load media gallery.');
+  }
+
+  return response.data;
 }
 
 export async function fetchMediaGallery(
-  filters: MediaGalleryFilters
+  filters: MediaGalleryFilters,
 ): Promise<MediaGalleryListData> {
   const response = await getRequest<ApiDataResponse<MediaGalleryListData>>(
     buildMediaGalleryQuery(filters),
-    { cache: "no-store" }
-  )
+    { cache: 'no-store' },
+  );
 
   if (!response.isValid || !response.data) {
-    throw new Error(response.message || "Failed to load media gallery.")
+    throw new Error(response.message || 'Failed to load media gallery.');
   }
 
-  return response.data
+  return response.data;
 }
 
-export async function fetchMediaGalleryItem(id: number): Promise<MediaGalleryItem> {
+export async function fetchMediaGalleryItem(
+  id: number,
+): Promise<MediaGalleryItem> {
   const response = await getRequest<ApiDataResponse<MediaGalleryItem>>(
     `/media-gallery/${id}`,
-    { cache: "no-store" }
-  )
+    { cache: 'no-store' },
+  );
 
   if (!response.isValid || !response.data) {
-    throw new Error(response.message || "Failed to load gallery item.")
+    throw new Error(response.message || 'Failed to load gallery item.');
   }
 
-  return response.data
+  return response.data;
 }
 
 export async function createMediaGalleryItem(
-  payload: MediaGalleryCreatePayload
-): Promise<number> {
-  const response = await postRequest<ApiDataResponse<number>>("/media-gallery", payload, {
-    cache: "no-store",
-  })
+  payload: MediaGalleryCreatePayload,
+): Promise<ApiMutationResult<number>> {
+  const response = await postRequest<ApiDataResponse<number>>(
+    '/media-gallery',
+    payload,
+    {
+      cache: 'no-store',
+    },
+  );
 
-  if (!response.isValid) {
-    throw new Error(response.message || "Failed to create gallery item.")
-  }
-
-  return response.data
+  return toApiMutationResult(response, 'Failed to create gallery item.');
 }
 
 export async function updateMediaGalleryItem(
   id: number,
-  payload: MediaGalleryUpdatePayload
-): Promise<void> {
+  payload: MediaGalleryUpdatePayload,
+): Promise<ApiMutationResult> {
   const response = await patchRequest<ApiDataResponse<unknown>>(
     `/media-gallery/${id}`,
     payload,
-    { cache: "no-store" }
-  )
+    { cache: 'no-store' },
+  );
 
-  if (!response.isValid) {
-    throw new Error(response.message || "Failed to update gallery item.")
-  }
+  return toApiMutationResult(response, 'Failed to update gallery item.');
 }
 
 export async function updateMediaGalleryActiveStatus(
   id: number,
-  isActive: boolean
-): Promise<void> {
+  isActive: boolean,
+): Promise<ApiMutationResult> {
   const response = await patchRequest<ApiDataResponse<unknown>>(
     `/media-gallery/${id}/active-status`,
     { isActive },
-    { cache: "no-store" }
-  )
+    { cache: 'no-store' },
+  );
 
-  if (!response.isValid) {
-    throw new Error(response.message || "Failed to update gallery item status.")
-  }
+  return toApiMutationResult(response, 'Failed to update gallery item status.');
 }

@@ -12,6 +12,7 @@ import {
   toggleFaqActiveAction,
   updateFaqAction,
 } from "@/app/actions/faqs"
+import { AdminFormActiveField } from "@/components/admin/shared/admin-form-active-field"
 import { AdminListCard } from "@/components/admin/shared/admin-list-card"
 import { ListPagination } from "@/components/admin/shared/list-pagination"
 import { RowIconActions } from "@/components/admin/shared/row-icon-actions"
@@ -42,18 +43,21 @@ import {
 } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
 import { PAGE_SIZES } from "@/hooks/useClientPagination"
+import { syncIsActiveAfterSave } from "@/lib/admin/sync-active-status"
 import { faqFormSchema, type FaqFormValues } from "@/lib/admin/schemas"
 import type { Faq, FaqListData } from "@/lib/types/faqs"
 
 const defaultForm: FaqFormValues = {
   question: "",
   answer: "",
+  isActive: true,
 }
 
 function toFormValues(row: Faq): FaqFormValues {
   return {
     question: row.question,
     answer: row.answer,
+    isActive: row.isActive,
   }
 }
 
@@ -129,12 +133,26 @@ export function FaqsAdminClient({ initialData }: FaqsAdminClientProps) {
     }
 
     startTransition(async () => {
-      const result = editing
-        ? await updateFaqAction(editing.faqId, payload)
+      const editingRow = editing
+      const result = editingRow
+        ? await updateFaqAction(editingRow.faqId, payload)
         : await createFaqAction(payload)
 
       if (result.error) {
         toast.error(result.error)
+        return
+      }
+
+      const entityId =
+        editingRow?.faqId ?? (result as { id?: number }).id
+      const statusError = await syncIsActiveAfterSave({
+        entityId,
+        previousActive: editingRow?.isActive,
+        nextActive: values.isActive,
+        sync: () => toggleFaqActiveAction(entityId!, values.isActive),
+      })
+      if (statusError) {
+        toast.error(statusError)
         return
       }
 
@@ -292,7 +310,7 @@ export function FaqsAdminClient({ initialData }: FaqsAdminClientProps) {
               <SheetHeader className="shrink-0 space-y-1 border-b p-4 sm:p-6">
                 <SheetTitle>{editing ? "Edit FAQ" : "Create FAQ"}</SheetTitle>
                 <SheetDescription>
-                  Add a question and answer pair. Toggle visibility from the list.
+                  Add a question and answer pair for the public site.
                 </SheetDescription>
               </SheetHeader>
               <div className="min-h-0 flex-1 overflow-y-auto">
@@ -325,14 +343,16 @@ export function FaqsAdminClient({ initialData }: FaqsAdminClientProps) {
                       </p>
                     )}
                   </div>
-                  {editing ? (
-                    <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
-                      Status:{" "}
-                      <span className="font-medium">
-                        {editing.isActive ? "Active" : "Inactive"}
-                      </span>
-                    </div>
-                  ) : null}
+                  <AdminFormActiveField
+                    id="faq-is-active"
+                    checked={form.watch("isActive")}
+                    onChange={(value) =>
+                      form.setValue("isActive", value, {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      })
+                    }
+                  />
                 </div>
               </div>
               <SheetFooter className="bg-background shrink-0 gap-2 border-t p-4 sm:flex-row sm:justify-end sm:p-6">

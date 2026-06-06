@@ -1,76 +1,80 @@
-"use server"
+'use server';
 
-import { revalidatePath } from "next/cache"
+import { revalidatePath } from 'next/cache';
 import {
   fetchOfficials,
   registerOfficial,
   updateOfficial,
   updateOfficialActiveStatus,
-} from "@/lib/officials"
+} from '@/lib/officials';
 import type {
   OfficialFilters,
   OfficialListData,
   OfficialRegistrationPayload,
   OfficialUpdatePayload,
-} from "@/lib/types/officials"
+} from '@/lib/types/officials';
 
 function revalidateOfficials() {
-  revalidatePath("/admin/officials")
+  revalidatePath('/admin/officials');
 }
 
 export async function getOfficialsAction(
-  filters: OfficialFilters
+  filters: OfficialFilters,
 ): Promise<{ data?: OfficialListData; error?: string }> {
   try {
-    const data = await fetchOfficials(filters)
-    return { data }
+    const data = await fetchOfficials(filters);
+    return { data };
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Failed to load officials.",
-    }
+      error:
+        error instanceof Error ? error.message : 'Failed to load officials.',
+    };
   }
 }
 
 export async function createOfficialAction(
-  payload: OfficialRegistrationPayload
-): Promise<{ success?: string; error?: string }> {
+  payload: OfficialRegistrationPayload,
+): Promise<{ success?: string; error?: string; id?: number }> {
   try {
-    await registerOfficial(payload)
-    revalidateOfficials()
-    return { success: "Official registered successfully." }
+    const result = await registerOfficial(payload);
+    revalidateOfficials();
+    return { success: result.message, id: result.data };
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Failed to register official.",
-    }
+      error:
+        error instanceof Error ? error.message : 'Failed to register official.',
+    };
   }
 }
 
 export async function updateOfficialAction(
   officialId: number,
-  payload: OfficialUpdatePayload
+  payload: OfficialUpdatePayload,
 ): Promise<{ success?: string; error?: string }> {
   try {
-    await updateOfficial(officialId, payload)
-    revalidateOfficials()
-    return { success: "Official updated successfully." }
+    const result = await updateOfficial(officialId, payload);
+    revalidateOfficials();
+    return { success: result.message };
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Failed to update official.",
-    }
+      error:
+        error instanceof Error ? error.message : 'Failed to update official.',
+    };
   }
 }
 
 export async function toggleOfficialActiveAction(
   officialId: number,
-  isActive: boolean
+  isActive: boolean,
 ): Promise<{ success?: string; error?: string }> {
   try {
-    await updateOfficialActiveStatus(officialId, isActive)
-    revalidateOfficials()
-    return { success: isActive ? "Official activated." : "Official deactivated." }
+    const result = await updateOfficialActiveStatus(officialId, isActive);
+    revalidateOfficials();
+    return { success: result.message };
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Failed to update status.",
-    }
+      error:
+        error instanceof Error ? error.message : 'Failed to update status.',
+    };
   }
 }

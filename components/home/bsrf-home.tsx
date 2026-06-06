@@ -13,6 +13,7 @@ import { HomeCommittee } from '@/components/home/sections/home-committee';
 import { HomeGallery } from '@/components/home/sections/home-gallery';
 import { HomePlayers } from '@/components/home/sections/home-players';
 import { HomeFooter } from '@/components/home/sections/home-footer';
+import type { HomeHeroSlide } from '@/lib/home/hero-gallery';
 
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -26,7 +27,11 @@ const dmSans = DM_Sans({
   variable: '--font-dm-sans',
 });
 
-export function BsrfHome() {
+type BsrfHomeProps = {
+  heroSlides: HomeHeroSlide[];
+};
+
+export function BsrfHome({ heroSlides }: BsrfHomeProps) {
   useEffect(() => {
     const timeout = window.setTimeout(() => {
       document.querySelectorAll('[data-fade-up]').forEach((el) => {
@@ -53,7 +58,7 @@ export function BsrfHome() {
       </a>
       <HomeNavbar />
       <main id="main">
-        <HomeHero />
+        <HomeHero slides={heroSlides} />
         <HomeStats />
         <HomeAbout />
         <HomePresident />

@@ -1,72 +1,79 @@
-"use server"
+'use server';
 
-import { revalidatePath } from "next/cache"
+import { revalidatePath } from 'next/cache';
 import {
   createEventType,
   fetchEventTypes,
   updateEventType,
   updateEventTypeActiveStatus,
-} from "@/lib/event-types"
-import type { EventTypeListData, EventTypePayload } from "@/lib/types/event-types"
+} from '@/lib/event-types';
+import type {
+  EventTypeListData,
+  EventTypePayload,
+} from '@/lib/types/event-types';
 
 function revalidateEventTypes() {
-  revalidatePath("/admin/event-types")
+  revalidatePath('/admin/event-types');
 }
 
 export async function getEventTypesAction(
   pageNumber: number,
-  pageSize: number
+  pageSize: number,
 ): Promise<{ data?: EventTypeListData; error?: string }> {
   try {
-    const data = await fetchEventTypes(pageNumber, pageSize)
-    return { data }
+    const data = await fetchEventTypes(pageNumber, pageSize);
+    return { data };
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Failed to load event types.",
-    }
+      error:
+        error instanceof Error ? error.message : 'Failed to load event types.',
+    };
   }
 }
 
 export async function createEventTypeAction(
-  payload: EventTypePayload
-): Promise<{ success?: string; error?: string }> {
+  payload: EventTypePayload,
+): Promise<{ success?: string; error?: string; id?: number }> {
   try {
-    await createEventType(payload)
-    revalidateEventTypes()
-    return { success: "Event type created." }
+    const result = await createEventType(payload);
+    revalidateEventTypes();
+    return { success: result.message, id: result.data };
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Failed to create event type.",
-    }
+      error:
+        error instanceof Error ? error.message : 'Failed to create event type.',
+    };
   }
 }
 
 export async function updateEventTypeAction(
   eventTypeId: number,
-  payload: EventTypePayload
+  payload: EventTypePayload,
 ): Promise<{ success?: string; error?: string }> {
   try {
-    await updateEventType(eventTypeId, payload)
-    revalidateEventTypes()
-    return { success: "Event type updated." }
+    const result = await updateEventType(eventTypeId, payload);
+    revalidateEventTypes();
+    return { success: result.message };
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Failed to update event type.",
-    }
+      error:
+        error instanceof Error ? error.message : 'Failed to update event type.',
+    };
   }
 }
 
 export async function toggleEventTypeActiveAction(
   eventTypeId: number,
-  isActive: boolean
+  isActive: boolean,
 ): Promise<{ success?: string; error?: string }> {
   try {
-    await updateEventTypeActiveStatus(eventTypeId, isActive)
-    revalidateEventTypes()
-    return { success: isActive ? "Event type activated." : "Event type deactivated." }
+    const result = await updateEventTypeActiveStatus(eventTypeId, isActive);
+    revalidateEventTypes();
+    return { success: result.message };
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Failed to update status.",
-    }
+      error:
+        error instanceof Error ? error.message : 'Failed to update status.',
+    };
   }
 }

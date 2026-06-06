@@ -54,6 +54,13 @@ export type MediaGalleryFilters = {
   isActive?: boolean
 }
 
+export type PublicMediaGalleryFilters = {
+  pageNumber: number
+  pageSize: number
+  galleryType?: GalleryType
+  category?: GalleryCategory
+}
+
 export type ApiDataResponse<T> = {
   isValid: boolean
   data: T

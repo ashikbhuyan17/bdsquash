@@ -6,7 +6,6 @@ import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { IMG_PLACEHOLDER_PNG } from "@/lib/admin/constants"
 import { isPlaceholderDataUrl } from "@/lib/admin/is-placeholder-data-url"
 import { compressImageFile } from "@/lib/compress-image"
 
@@ -33,7 +32,7 @@ export function ImageDataUrlUpload({
 }: ImageDataUrlUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [isDragging, setIsDragging] = useState(false)
-  const hasImage = !isPlaceholderDataUrl(value)
+  const hasImage = value.trim() !== "" && !isPlaceholderDataUrl(value)
   const labelId = useId()
   const errorId = `${labelId}-error`
 
@@ -76,7 +75,7 @@ export function ImageDataUrlUpload({
   const onRemove = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    onChange(IMG_PLACEHOLDER_PNG)
+    onChange("")
   }
 
   return (

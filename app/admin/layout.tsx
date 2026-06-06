@@ -1,11 +1,11 @@
 import { AdminAppShell } from "@/components/admin/admin-app-shell"
-import { Toaster } from "sonner"
+import { AdminToaster } from "@/components/admin/admin-toaster"
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <AdminAppShell>{children}</AdminAppShell>
-      <Toaster richColors position="top-right" closeButton className="sm:max-w-md" />
+      <AdminToaster />
     </>
   )
 }

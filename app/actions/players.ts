@@ -1,76 +1,79 @@
-"use server"
+'use server';
 
-import { revalidatePath } from "next/cache"
+import { revalidatePath } from 'next/cache';
 import {
   fetchPlayers,
   registerPlayer,
   updatePlayer,
   updatePlayerActiveStatus,
-} from "@/lib/players"
+} from '@/lib/players';
 import type {
   PlayerListData,
   PlayerRegistrationPayload,
   PlayerUpdatePayload,
-} from "@/lib/types/players"
+} from '@/lib/types/players';
 
 function revalidatePlayers() {
-  revalidatePath("/admin/players")
+  revalidatePath('/admin/players');
 }
 
 export async function getPlayersAction(
   pageNumber: number,
-  pageSize: number
+  pageSize: number,
 ): Promise<{ data?: PlayerListData; error?: string }> {
   try {
-    const data = await fetchPlayers(pageNumber, pageSize)
-    return { data }
+    const data = await fetchPlayers(pageNumber, pageSize);
+    return { data };
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Failed to load players.",
-    }
+      error: error instanceof Error ? error.message : 'Failed to load players.',
+    };
   }
 }
 
 export async function createPlayerAction(
-  payload: PlayerRegistrationPayload
-): Promise<{ success?: string; error?: string }> {
+  payload: PlayerRegistrationPayload,
+): Promise<{ success?: string; error?: string; id?: string }> {
   try {
-    await registerPlayer(payload)
-    revalidatePlayers()
-    return { success: "Player registered successfully." }
+    const result = await registerPlayer(payload);
+    revalidatePlayers();
+    return { success: result.message, id: result.data };
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Failed to register player.",
-    }
+      error:
+        error instanceof Error ? error.message : 'Failed to register player.',
+    };
   }
 }
 
 export async function updatePlayerAction(
   userId: string,
-  payload: PlayerUpdatePayload
+  payload: PlayerUpdatePayload,
 ): Promise<{ success?: string; error?: string }> {
   try {
-    await updatePlayer(userId, payload)
-    revalidatePlayers()
-    return { success: "Player updated successfully." }
+    const result = await updatePlayer(userId, payload);
+    revalidatePlayers();
+    return { success: result.message };
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Failed to update player.",
-    }
+      error:
+        error instanceof Error ? error.message : 'Failed to update player.',
+    };
   }
 }
 
 export async function togglePlayerActiveAction(
   userId: string,
-  isActive: boolean
+  isActive: boolean,
 ): Promise<{ success?: string; error?: string }> {
   try {
-    await updatePlayerActiveStatus(userId, isActive)
-    revalidatePlayers()
-    return { success: isActive ? "Player activated." : "Player deactivated." }
+    const result = await updatePlayerActiveStatus(userId, isActive);
+    revalidatePlayers();
+    return { success: result.message };
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Failed to update status.",
-    }
+      error:
+        error instanceof Error ? error.message : 'Failed to update status.',
+    };
   }
 }

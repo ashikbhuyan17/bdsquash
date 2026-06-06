@@ -12,6 +12,7 @@ import {
   toggleOfficialActiveAction,
   updateOfficialAction,
 } from "@/app/actions/officials"
+import { AdminFormActiveField } from "@/components/admin/shared/admin-form-active-field"
 import { OfficialsFiltersBar } from "@/components/admin/shared/officials-filters-bar"
 import { AdminListCard } from "@/components/admin/shared/admin-list-card"
 import { ImageDataUrlUpload } from "@/components/admin/shared/image-data-url-upload"
@@ -51,6 +52,7 @@ import {
 } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
 import { PAGE_SIZES } from "@/hooks/useClientPagination"
+import { syncIsActiveAfterSave } from "@/lib/admin/sync-active-status"
 import { officialFormSchema, type OfficialFormValues } from "@/lib/admin/schemas"
 import { getProfileImageUrl, toApiMediaValue } from "@/lib/media-urls"
 import {
@@ -85,6 +87,7 @@ const defaultForm: OfficialFormValues = {
   description: "",
   profileLink: "",
   profileImage: "",
+  isActive: true,
 }
 
 function toFormValues(row: Official): OfficialFormValues {
@@ -97,6 +100,7 @@ function toFormValues(row: Official): OfficialFormValues {
     description: row.description,
     profileLink: row.profileLink,
     profileImage: row.profileImage ? getProfileImageUrl(row.profileImage) : "",
+    isActive: row.isActive,
   }
 }
 
@@ -200,12 +204,26 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
     }
 
     startTransition(async () => {
-      const result = editing
-        ? await updateOfficialAction(editing.officialId, payload)
+      const editingRow = editing
+      const result = editingRow
+        ? await updateOfficialAction(editingRow.officialId, payload)
         : await createOfficialAction(payload)
 
       if (result.error) {
         toast.error(result.error)
+        return
+      }
+
+      const entityId =
+        editingRow?.officialId ?? (result as { id?: number }).id
+      const statusError = await syncIsActiveAfterSave({
+        entityId,
+        previousActive: editingRow?.isActive,
+        nextActive: values.isActive,
+        sync: () => toggleOfficialActiveAction(entityId!, values.isActive),
+      })
+      if (statusError) {
+        toast.error(statusError)
         return
       }
 
@@ -509,6 +527,17 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
                       }
                     />
                   </div>
+
+                  <AdminFormActiveField
+                    id="official-is-active"
+                    checked={form.watch("isActive")}
+                    onChange={(value) =>
+                      form.setValue("isActive", value, {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      })
+                    }
+                  />
                 </div>
               </div>
               <SheetFooter className="bg-background shrink-0 gap-2 border-t p-4 sm:flex-row sm:justify-end sm:p-6">

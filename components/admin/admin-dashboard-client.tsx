@@ -3,11 +3,15 @@
 import Link from "next/link"
 import {
   ArrowUpRightIcon,
+  CalendarDaysIcon,
+  CalendarIcon,
+  CircleHelpIcon,
   ImageIcon,
   ImagesIcon,
   InfoIcon,
   LayoutDashboardIcon,
   NewspaperIcon,
+  UserCogIcon,
   UsersIcon,
 } from "lucide-react"
 
@@ -38,6 +42,20 @@ const modules = [
     icon: NewspaperIcon,
   },
   {
+    href: "/admin/events",
+    label: "Events",
+    count: () => 0,
+    description: "Tournaments, schedules, and locations",
+    icon: CalendarIcon,
+  },
+  {
+    href: "/admin/event-types",
+    label: "Event types",
+    count: () => 0,
+    description: "Tournament and event categories",
+    icon: CalendarDaysIcon,
+  },
+  {
     href: "/admin/players",
     label: "Players",
     count: () => seedPlayers.length,
@@ -45,11 +63,25 @@ const modules = [
     icon: UsersIcon,
   },
   {
+    href: "/admin/officials",
+    label: "Officials",
+    count: () => 0,
+    description: "Coaches and federation officials",
+    icon: UserCogIcon,
+  },
+  {
     href: "/admin/gallery",
     label: "Gallery",
     count: () => seedGallery.length,
     description: "Media albums and links",
     icon: ImagesIcon,
+  },
+  {
+    href: "/admin/faqs",
+    label: "FAQs",
+    count: () => 0,
+    description: "Questions and answers for visitors",
+    icon: CircleHelpIcon,
   },
   {
     href: "/admin/about",

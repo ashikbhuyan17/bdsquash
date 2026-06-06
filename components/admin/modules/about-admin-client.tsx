@@ -14,6 +14,7 @@ import { ListPagination } from "@/components/admin/shared/list-pagination"
 import { RowIconActions } from "@/components/admin/shared/row-icon-actions"
 import { Button } from "@/components/ui/button"
 import { adminBtnPrimary, adminTableHeaderRowClass } from "@/lib/admin/admin-ui"
+import { formPlaceholders } from "@/lib/admin/form-placeholders"
 import { Badge } from "@/components/ui/badge"
 import { Form } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
@@ -286,7 +287,7 @@ export function AboutAdminClient() {
                         onChange={(html) =>
                           form.setValue("history", html, { shouldValidate: true, shouldDirty: true })
                         }
-                        placeholder="Federation background…"
+                        placeholder={formPlaceholders.history}
                         aria-invalid={!!form.formState.errors.history}
                       />
                     </div>
@@ -307,7 +308,7 @@ export function AboutAdminClient() {
                             shouldDirty: true,
                           })
                         }
-                        placeholder="Letter from the president…"
+                        placeholder={formPlaceholders.presidentMessage}
                         aria-invalid={!!form.formState.errors.presidentMessage}
                       />
                     </div>
@@ -319,7 +320,7 @@ export function AboutAdminClient() {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="about-mission">Mission</Label>
-                    <Textarea id="about-mission" rows={2} {...form.register("mission")} />
+                    <Textarea id="about-mission" rows={2} placeholder={formPlaceholders.mission} {...form.register("mission")} />
                     {form.formState.errors.mission?.message != null && (
                       <p className="text-destructive text-sm" role="alert">
                         {String(form.formState.errors.mission.message)}
@@ -328,7 +329,7 @@ export function AboutAdminClient() {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="about-vision">Vision</Label>
-                    <Textarea id="about-vision" rows={2} {...form.register("vision")} />
+                    <Textarea id="about-vision" rows={2} placeholder={formPlaceholders.vision} {...form.register("vision")} />
                     {form.formState.errors.vision?.message != null && (
                       <p className="text-destructive text-sm" role="alert">
                         {String(form.formState.errors.vision.message)}

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { IMG_PLACEHOLDER_PNG } from "@/lib/admin/constants"
 import { isPlaceholderDataUrl } from "@/lib/admin/is-placeholder-data-url"
-import { readFileAsDataUrl } from "@/lib/admin/read-file-as-data-url"
+import { compressImageFile } from "@/lib/compress-image"
 
 const ACCEPT = "image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
 const MAX_BYTES = 4 * 1024 * 1024
@@ -48,10 +48,12 @@ export function ImageDataUrlUpload({
         return
       }
       try {
-        const dataUrl = await readFileAsDataUrl(file)
+        const dataUrl = await compressImageFile(file)
         onChange(dataUrl)
-      } catch {
-        toast.error("Could not read that file")
+      } catch (error) {
+        toast.error(
+          error instanceof Error ? error.message : "Could not process that file"
+        )
       }
     },
     [onChange]

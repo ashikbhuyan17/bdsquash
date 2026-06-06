@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 
 type RowIconActionsProps = {
   onEdit: () => void
-  onDelete: () => void
+  onDelete?: () => void
   className?: string
 }
 
@@ -36,19 +36,21 @@ export function RowIconActions({ onEdit, onDelete, className }: RowIconActionsPr
       >
         <PencilLineIcon className="size-3.5 sm:size-4" />
       </Button>
-      <Button
-        type="button"
-        variant="outline"
-        className={cn(
-          square,
-          "border-rose-200/80 bg-rose-50/90 text-rose-800 hover:bg-rose-100/90"
-        )}
-        onClick={onDelete}
-        aria-label="Delete"
-        title="Delete"
-      >
-        <Trash2Icon className="size-3.5 sm:size-4" />
-      </Button>
+      {onDelete ? (
+        <Button
+          type="button"
+          variant="outline"
+          className={cn(
+            square,
+            "border-rose-200/80 bg-rose-50/90 text-rose-800 hover:bg-rose-100/90"
+          )}
+          onClick={onDelete}
+          aria-label="Delete"
+          title="Delete"
+        >
+          <Trash2Icon className="size-3.5 sm:size-4" />
+        </Button>
+      ) : null}
     </div>
   )
 }

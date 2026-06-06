@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
+import { NavAuthActions } from '@/components/auth/nav-auth-actions';
 import { cn } from '@/lib/utils';
 
 // Navigation structure matching the image
@@ -404,6 +405,9 @@ const Header = () => {
                       CONTACT US
                     </Link>
                   </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavAuthActions variant="header" layout="desktop" />
+                  </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
 
@@ -525,6 +529,11 @@ const Header = () => {
                           CONTACT US
                         </Link>
                       </SheetClose>
+                      <NavAuthActions
+                        variant="header"
+                        layout="mobile"
+                        onNavigate={() => setIsOpen(false)}
+                      />
                     </nav>
                   </div>
                 </SheetContent>

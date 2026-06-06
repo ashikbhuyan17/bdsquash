@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { NavAuthActions } from '@/components/auth/nav-auth-actions';
 import { HOME_NAV } from '@/lib/home/data';
 import { cn } from '@/lib/utils';
 
@@ -40,12 +41,7 @@ export function HomeNavbar() {
             </li>
           ))}
         </ul>
-        <Link
-          href="/contact"
-          className="hidden rounded-full bg-bsrf-green px-[22px] py-[11px] text-center text-xs font-bold uppercase tracking-[0.08em] text-black transition-all hover:-translate-y-px hover:shadow-[0_6px_22px_rgba(200,244,0,0.25)] md:inline-block"
-        >
-          Register
-        </Link>
+        <NavAuthActions variant="bsrf" layout="desktop" />
         <button
           type="button"
           className="cursor-pointer border-none bg-transparent text-2xl text-white lg:hidden"
@@ -82,13 +78,11 @@ export function HomeNavbar() {
             </a>
           )
         )}
-        <Link
-          href="/contact"
-          onClick={() => setMenuOpen(false)}
-          className="py-3.5 text-sm uppercase tracking-[0.18em] text-bsrf-green"
-        >
-          Register →
-        </Link>
+        <NavAuthActions
+          variant="bsrf"
+          layout="mobile"
+          onNavigate={() => setMenuOpen(false)}
+        />
       </div>
     </>
   );

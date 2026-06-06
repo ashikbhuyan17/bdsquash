@@ -1,3 +1,8 @@
+import { HomeImage } from '@/components/home/home-image';
+
+const PRESIDENT_NAME = 'Maj Gen Md Hasan Uz Zaman (ndu, afwc, psc, MPhil)';
+const PRESIDENT_TITLE = 'President, Bangladesh Squash Rackets Federation';
+
 export function HomePresident() {
   return (
     <section
@@ -12,17 +17,19 @@ export function HomePresident() {
             className="absolute -right-4 -top-5 z-0 h-[130px] w-[130px] rounded-full bg-bsrf-red shadow-[0_0_60px_rgba(244,42,65,0.35)] min-[981px]:-right-[26px] min-[981px]:-top-[30px] min-[981px]:h-[190px] min-[981px]:w-[190px]"
           />
           <div className="relative z-[1] bg-bsrf-bd-green p-3">
-            <div
-              className="flex aspect-[4/5] w-full items-center justify-center bg-[repeating-linear-gradient(135deg,#0a3a2b_0_10px,#0d4434_10px_20px)] text-xs uppercase tracking-[0.15em] text-[#cfeede]"
-              role="img"
-              aria-label="Portrait of the BSRF President"
-            >
-              President Photo
+            <div className="relative aspect-[4/5] w-full overflow-hidden">
+              <HomeImage
+                src="/President.jpeg"
+                alt={`${PRESIDENT_NAME}, President, BSRF`}
+                fallbackLabel="President Photo"
+                className="h-full w-full"
+                priority
+              />
             </div>
           </div>
           <div className="relative z-[1] border-t border-white/10 bg-bsrf-bd-green px-[18px] py-4">
-            <div className="font-bebas text-[28px] leading-none tracking-wide text-white">
-              President&apos;s Name
+            <div className="font-bebas text-[22px] leading-tight tracking-wide text-white min-[981px]:text-[28px]">
+              {PRESIDENT_NAME}
             </div>
             <div className="mt-1.5 text-[11px] uppercase tracking-[0.18em] text-white/75">
               President — BSRF
@@ -61,11 +68,11 @@ export function HomePresident() {
             be part of our journey.
           </p>
           <div className="mt-[26px] flex flex-col gap-0.5 border-l-[3px] border-bsrf-green pl-4">
-            <span className="font-bebas text-2xl tracking-wide text-white">
-              President&apos;s Name
+            <span className="font-bebas text-xl tracking-wide text-white min-[981px]:text-2xl">
+              {PRESIDENT_NAME}
             </span>
             <span className="text-xs uppercase tracking-[0.12em] text-bsrf-muted">
-              President, Bangladesh Squash Rackets Federation
+              {PRESIDENT_TITLE}
             </span>
           </div>
         </div>

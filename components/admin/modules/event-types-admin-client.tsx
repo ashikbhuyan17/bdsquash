@@ -12,6 +12,7 @@ import {
   toggleEventTypeActiveAction,
   updateEventTypeAction,
 } from '@/app/actions/event-types';
+import { AdminFormActiveField } from '@/components/admin/shared/admin-form-active-field';
 import { AdminListCard } from '@/components/admin/shared/admin-list-card';
 import { ImageDataUrlUpload } from '@/components/admin/shared/image-data-url-upload';
 import { ImageThumb } from '@/components/admin/shared/image-thumb';
@@ -23,6 +24,7 @@ import {
   adminTableHeaderRowClass,
 } from '@/lib/admin/admin-ui';
 import { formPlaceholders } from '@/lib/admin/form-placeholders';
+import { syncIsActiveAfterSave } from '@/lib/admin/sync-active-status';
 import { Badge } from '@/components/ui/badge';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -59,6 +61,7 @@ const defaultForm: EventTypeFormValues = {
   name: '',
   image: IMG_PLACEHOLDER_PNG,
   description: '',
+  isActive: true,
 };
 
 function toFormValues(row: EventType): EventTypeFormValues {
@@ -66,6 +69,7 @@ function toFormValues(row: EventType): EventTypeFormValues {
     name: row.name,
     image: row.image ? getEventTypeImageUrl(row.image) : IMG_PLACEHOLDER_PNG,
     description: row.description,
+    isActive: row.isActive,
   };
 }
 
@@ -159,6 +163,20 @@ export function EventTypesAdminClient({
         if (result.error) {
           setSubmitError(result.error);
           toast.error(result.error);
+          return;
+        }
+
+        const entityId =
+          editingRow?.eventTypeId ?? (result as { id?: number }).id;
+        const statusError = await syncIsActiveAfterSave({
+          entityId,
+          previousActive: editingRow?.isActive,
+          nextActive: values.isActive,
+          sync: () => toggleEventTypeActiveAction(entityId!, values.isActive),
+        });
+        if (statusError) {
+          setSubmitError(statusError);
+          toast.error(statusError);
           return;
         }
 
@@ -441,6 +459,17 @@ export function EventTypesAdminClient({
                       </p>
                     )}
                   </div>
+
+                  <AdminFormActiveField
+                    id="event-type-is-active"
+                    checked={form.watch('isActive')}
+                    onChange={(value) =>
+                      form.setValue('isActive', value, {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      })
+                    }
+                  />
                 </div>
               </div>
               <SheetFooter className="bg-background shrink-0 gap-2 border-t p-4 sm:flex-row sm:justify-end sm:p-6">

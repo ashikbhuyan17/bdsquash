@@ -1,5 +1,6 @@
 import "server-only"
 
+import { toApiMutationResult, type ApiMutationResult } from "@/lib/api-response"
 import { getRequest, patchRequest, postRequest } from "@/lib/fetch"
 import type {
   ApiDataResponse,
@@ -43,44 +44,38 @@ export async function fetchEvents(filters: EventFilters): Promise<EventListData>
   return response.data
 }
 
-export async function createEvent(payload: EventCreatePayload): Promise<number> {
+export async function createEvent(
+  payload: EventCreatePayload
+): Promise<ApiMutationResult<number>> {
   const response = await postRequest<ApiDataResponse<number>>("/event", payload, {
     cache: "no-store",
   })
 
-  if (!response.isValid) {
-    throw new Error(response.message || "Failed to create event.")
-  }
-
-  return response.data
+  return toApiMutationResult(response, "Failed to create event.")
 }
 
 export async function updateEvent(
   eventId: number,
   payload: EventUpdatePayload
-): Promise<void> {
+): Promise<ApiMutationResult> {
   const response = await patchRequest<ApiDataResponse<unknown>>(
     `/events/${eventId}`,
     payload,
     { cache: "no-store" }
   )
 
-  if (!response.isValid) {
-    throw new Error(response.message || "Failed to update event.")
-  }
+  return toApiMutationResult(response, "Failed to update event.")
 }
 
 export async function updateEventActiveStatus(
   eventId: number,
   isActive: boolean
-): Promise<void> {
+): Promise<ApiMutationResult> {
   const response = await patchRequest<ApiDataResponse<unknown>>(
     `/events/${eventId}/active-status`,
     { isActive },
     { cache: "no-store" }
   )
 
-  if (!response.isValid) {
-    throw new Error(response.message || "Failed to update event status.")
-  }
+  return toApiMutationResult(response, "Failed to update event status.")
 }

@@ -1,8 +1,14 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { HOME_HERO_SHOTS, HOME_TICKER } from '@/lib/home/data';
+import { HOME_TICKER } from '@/lib/home/data';
+import type { HomeHeroSlide } from '@/lib/home/hero-gallery';
 import { cn } from '@/lib/utils';
+
+type HomeHeroProps = {
+  slides: HomeHeroSlide[];
+};
 
 function scrollToSection(id: string) {
   const el = document.getElementById(id);
@@ -11,16 +17,22 @@ function scrollToSection(id: string) {
   }
 }
 
-export function HomeHero() {
+export function HomeHero({ slides }: HomeHeroProps) {
   const [slide, setSlide] = useState(0);
 
   useEffect(() => {
+    setSlide(0);
+  }, [slides]);
+
+  useEffect(() => {
+    if (slides.length <= 1) return;
+
     const id = window.setInterval(
-      () => setSlide((prev) => (prev + 1) % HOME_HERO_SHOTS.length),
+      () => setSlide((prev) => (prev + 1) % slides.length),
       3500
     );
     return () => window.clearInterval(id);
-  }, []);
+  }, [slides.length]);
 
   const tickerText = `⬥  ${HOME_TICKER}`;
 
@@ -50,7 +62,7 @@ export function HomeHero() {
           </span>
           <h1
             data-fade-up
-            className="mb-2.5 animate-bsrf-fade-up font-bebas text-[64px] leading-[0.88] tracking-wide text-white min-[981px]:text-[clamp(52px,7.4vw,104px)] [animation-delay:0.3s] [animation-fill-mode:both] motion-reduce:animate-none motion-reduce:opacity-100"
+            className="mb-2.5 animate-bsrf-fade-up font-bebas text-[64px] leading-[0.88] tracking-wide text-white min-[981px]:text-[clamp(52px,7.7vw,104px)] [animation-delay:0.3s] [animation-fill-mode:both] motion-reduce:animate-none motion-reduce:opacity-100"
           >
             BANGLADESH
             <br />
@@ -83,7 +95,6 @@ export function HomeHero() {
           </div>
         </div>
 
-        {/* Right side — same as BSRF Homepage.html: rings + striped placeholder slides */}
         <div
           data-fade-up
           aria-label="Featured photos"
@@ -99,9 +110,9 @@ export function HomeHero() {
           />
 
           <div className="relative aspect-[4/5] w-[min(320px,100%)]">
-            {HOME_HERO_SHOTS.map((shot, idx) => (
+            {slides.map((item, idx) => (
               <div
-                key={shot.title}
+                key={item.id}
                 className={cn(
                   'absolute inset-0 overflow-hidden border border-bsrf-border transition-[opacity,transform] duration-[900ms] ease-in-out',
                   idx === slide
@@ -109,38 +120,51 @@ export function HomeHero() {
                     : 'scale-105 opacity-0'
                 )}
               >
-                <div
-                  className="flex h-full w-full items-center justify-center bg-[repeating-linear-gradient(135deg,#1f1f1f_0_10px,#232323_10px_20px)] text-xs uppercase tracking-[0.15em] text-bsrf-muted"
-                  role="img"
-                  aria-label={shot.title}
-                >
-                  {shot.title}
-                </div>
+                {item.imageUrl ? (
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                    sizes="320px"
+                    priority={idx === 0}
+                  />
+                ) : (
+                  <div
+                    className="flex h-full w-full items-center justify-center bg-[repeating-linear-gradient(135deg,#1f1f1f_0_10px,#232323_10px_20px)] text-xs uppercase tracking-[0.15em] text-bsrf-muted"
+                    role="img"
+                    aria-label={item.title}
+                  >
+                    {item.title}
+                  </div>
+                )}
                 <div className="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 bg-gradient-to-t from-[rgba(10,10,10,0.92)] to-transparent px-[18px] pb-4 pt-[18px]">
                   <span className="font-bebas text-2xl leading-none tracking-[0.5px] text-white">
-                    {shot.title}
+                    {item.title}
                   </span>
                   <span className="text-[11px] uppercase tracking-[0.14em] text-bsrf-green">
-                    {shot.caption}
+                    {item.caption}
                   </span>
                 </div>
               </div>
             ))}
 
-            <div className="absolute -bottom-[26px] left-0 right-0 z-[2] flex justify-center gap-2">
-              {HOME_HERO_SHOTS.map((shot, idx) => (
-                <button
-                  key={shot.title}
-                  type="button"
-                  className={cn(
-                    'h-1 w-7 cursor-pointer border-none p-0 transition-colors duration-200',
-                    idx === slide ? 'bg-bsrf-green' : 'bg-bsrf-border'
-                  )}
-                  aria-label={`Show ${shot.title}`}
-                  onClick={() => setSlide(idx)}
-                />
-              ))}
-            </div>
+            {slides.length > 1 ? (
+              <div className="absolute -bottom-[26px] left-0 right-0 z-[2] flex justify-center gap-2">
+                {slides.map((item, idx) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={cn(
+                      'h-1 w-7 cursor-pointer border-none p-0 transition-colors duration-200',
+                      idx === slide ? 'bg-bsrf-green' : 'bg-bsrf-border'
+                    )}
+                    aria-label={`Show ${item.title}`}
+                    onClick={() => setSlide(idx)}
+                  />
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

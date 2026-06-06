@@ -80,6 +80,7 @@ export const playerFormSchema = z.object({
     .min(1, "Club is required")
     .max(200, "Club must not exceed 200 characters"),
   points: z.string().trim().min(1, "Points are required"),
+  isActive: z.boolean(),
 })
 
 export type PlayerFormValues = z.infer<typeof playerFormSchema>
@@ -96,8 +97,8 @@ export const mediaGalleryFormSchema = z.object({
   description: z
     .string()
     .trim()
-    .min(1, "Description is required")
     .max(4000, "Description must not exceed 4000 characters"),
+  isActive: z.boolean(),
 })
 
 export const aboutFormSchema = z.object({
@@ -142,6 +143,7 @@ export const eventTypeFormSchema = z.object({
     .trim()
     .min(1, "Description is required")
     .max(2000, "Description must not exceed 2000 characters"),
+  isActive: z.boolean(),
 })
 
 export type EventTypeFormValues = z.infer<typeof eventTypeFormSchema>
@@ -168,6 +170,7 @@ export const eventFormSchema = z.object({
   latitude: z.string().trim().min(1, "Latitude is required"),
   longitude: z.string().trim().min(1, "Longitude is required"),
   image: z.string(),
+  isActive: z.boolean(),
 })
 
 export type EventFormSchemaValues = z.infer<typeof eventFormSchema>
@@ -183,6 +186,7 @@ export const faqFormSchema = z.object({
     .trim()
     .min(1, "Answer is required")
     .max(4000, "Answer must not exceed 4000 characters"),
+  isActive: z.boolean(),
 })
 
 export type FaqFormValues = z.infer<typeof faqFormSchema>
@@ -216,6 +220,7 @@ export const officialFormSchema = z.object({
     .url("Please enter a valid profile link")
     .or(z.literal("")),
   profileImage: z.string(),
+  isActive: z.boolean(),
 })
 
 export type OfficialFormValues = z.infer<typeof officialFormSchema>

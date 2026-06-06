@@ -123,6 +123,11 @@
   }
 }
 
+/* Sonner must sit above Radix Sheet/Dialog portals (z-50) */
+[data-sonner-toaster] {
+  z-index: 99999 !important;
+}
+
 /* Admin data tables — reference: #F9FAFB header, #E5E7EB borders, neutral text */
 @layer components {
   .admin-data-table {

@@ -33,11 +33,11 @@ export async function getEventsAction(
 
 export async function createEventAction(
   payload: EventCreatePayload
-): Promise<{ success?: string; error?: string }> {
+): Promise<{ success?: string; error?: string; id?: number }> {
   try {
-    await createEvent(payload)
+    const result = await createEvent(payload)
     revalidateEvents()
-    return { success: "Event created." }
+    return { success: result.message, id: result.data }
   } catch (error) {
     return {
       error: error instanceof Error ? error.message : "Failed to create event.",
@@ -50,9 +50,9 @@ export async function updateEventAction(
   payload: EventUpdatePayload
 ): Promise<{ success?: string; error?: string }> {
   try {
-    await updateEvent(eventId, payload)
+    const result = await updateEvent(eventId, payload)
     revalidateEvents()
-    return { success: "Event updated." }
+    return { success: result.message }
   } catch (error) {
     return {
       error: error instanceof Error ? error.message : "Failed to update event.",
@@ -65,9 +65,9 @@ export async function toggleEventActiveAction(
   isActive: boolean
 ): Promise<{ success?: string; error?: string }> {
   try {
-    await updateEventActiveStatus(eventId, isActive)
+    const result = await updateEventActiveStatus(eventId, isActive)
     revalidateEvents()
-    return { success: isActive ? "Event activated." : "Event deactivated." }
+    return { success: result.message }
   } catch (error) {
     return {
       error: error instanceof Error ? error.message : "Failed to update status.",

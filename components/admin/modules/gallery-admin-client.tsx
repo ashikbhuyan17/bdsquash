@@ -13,6 +13,7 @@ import {
   toggleMediaGalleryActiveAction,
   updateMediaGalleryItemAction,
 } from "@/app/actions/media-gallery"
+import { AdminFormActiveField } from "@/components/admin/shared/admin-form-active-field"
 import { GalleryFiltersBar } from "@/components/admin/shared/gallery-filters-bar"
 import { AdminListCard } from "@/components/admin/shared/admin-list-card"
 import { ImageDataUrlUpload } from "@/components/admin/shared/image-data-url-upload"
@@ -106,6 +107,7 @@ const defaultForm: MediaGalleryFormValues = {
   image: "",
   newsLink: "",
   description: "",
+  isActive: true,
 }
 
 function toFormValues(row: MediaGalleryItem): MediaGalleryFormValues {
@@ -115,6 +117,7 @@ function toFormValues(row: MediaGalleryItem): MediaGalleryFormValues {
     image: row.image ? getMediaGalleryImageUrl(row.image) : "",
     newsLink: row.newsLink,
     description: row.description,
+    isActive: row.isActive,
   }
 }
 
@@ -246,13 +249,28 @@ export function GalleryAdminClient({ initialData }: GalleryAdminClientProps) {
     }
 
     startTransition(async () => {
-      const result = editing
-        ? await updateMediaGalleryItemAction(editing.id, payload)
-        : await createMediaGalleryItemAction({ ...payload, isActive: true })
+      const editingRow = editing
+      const result = editingRow
+        ? await updateMediaGalleryItemAction(editingRow.id, payload)
+        : await createMediaGalleryItemAction({
+            ...payload,
+            isActive: values.isActive,
+          })
 
       if (result.error) {
         toast.error(result.error)
         return
+      }
+
+      if (editingRow && values.isActive !== editingRow.isActive) {
+        const statusResult = await toggleMediaGalleryActiveAction(
+          editingRow.id,
+          values.isActive
+        )
+        if (statusResult.error) {
+          toast.error(statusResult.error)
+          return
+        }
       }
 
       toast.success(result.success)
@@ -542,16 +560,16 @@ export function GalleryAdminClient({ initialData }: GalleryAdminClientProps) {
                       />
                     </div>
 
-                    {editing ? (
-                      <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
-                        ID: <span className="font-medium">{editing.id}</span>
-                        {" · "}
-                        Status:{" "}
-                        <span className="font-medium">
-                          {editing.isActive ? "Active" : "Inactive"}
-                        </span>
-                      </div>
-                    ) : null}
+                    <AdminFormActiveField
+                      id="gallery-is-active"
+                      checked={form.watch("isActive")}
+                      onChange={(value) =>
+                        form.setValue("isActive", value, {
+                          shouldDirty: true,
+                          shouldValidate: true,
+                        })
+                      }
+                    />
                   </div>
                 )}
               </div>

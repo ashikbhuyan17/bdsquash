@@ -1,5 +1,6 @@
 import "server-only"
 
+import { toApiMutationResult, type ApiMutationResult } from "@/lib/api-response"
 import { getRequest, patchRequest, postRequest } from "@/lib/fetch"
 import type {
   ApiDataResponse,
@@ -23,41 +24,38 @@ export async function fetchFaqs(
   return response.data
 }
 
-export async function createFaq(payload: FaqPayload): Promise<number> {
+export async function createFaq(
+  payload: FaqPayload
+): Promise<ApiMutationResult<number>> {
   const response = await postRequest<ApiDataResponse<number>>("/faqs", payload, {
     cache: "no-store",
   })
 
-  if (!response.isValid) {
-    throw new Error(response.message || "Failed to create FAQ.")
-  }
-
-  return response.data
+  return toApiMutationResult(response, "Failed to create FAQ.")
 }
 
-export async function updateFaq(faqId: number, payload: FaqPayload): Promise<void> {
+export async function updateFaq(
+  faqId: number,
+  payload: FaqPayload
+): Promise<ApiMutationResult> {
   const response = await patchRequest<ApiDataResponse<unknown>>(
     `/faqs/${faqId}`,
     payload,
     { cache: "no-store" }
   )
 
-  if (!response.isValid) {
-    throw new Error(response.message || "Failed to update FAQ.")
-  }
+  return toApiMutationResult(response, "Failed to update FAQ.")
 }
 
 export async function updateFaqActiveStatus(
   faqId: number,
   isActive: boolean
-): Promise<void> {
+): Promise<ApiMutationResult> {
   const response = await patchRequest<ApiDataResponse<unknown>>(
     `/faqs/${faqId}/active-status`,
     { isActive },
     { cache: "no-store" }
   )
 
-  if (!response.isValid) {
-    throw new Error(response.message || "Failed to update FAQ status.")
-  }
+  return toApiMutationResult(response, "Failed to update FAQ status.")
 }

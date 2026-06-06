@@ -12,6 +12,7 @@ import {
   togglePlayerActiveAction,
   updatePlayerAction,
 } from '@/app/actions/players';
+import { AdminFormActiveField } from '@/components/admin/shared/admin-form-active-field';
 import { AdminListCard } from '@/components/admin/shared/admin-list-card';
 import { ImageDataUrlUpload } from '@/components/admin/shared/image-data-url-upload';
 import { ImageThumb } from '@/components/admin/shared/image-thumb';
@@ -23,6 +24,7 @@ import {
   adminTableHeaderRowClass,
 } from '@/lib/admin/admin-ui';
 import { formPlaceholders } from '@/lib/admin/form-placeholders';
+import { syncIsActiveAfterSave } from '@/lib/admin/sync-active-status';
 import { Badge } from '@/components/ui/badge';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -86,6 +88,7 @@ const defaultForm: PlayerFormValues = {
   profileLink: '',
   club: '',
   points: '0',
+  isActive: true,
 };
 
 function toFormValues(row: Player): PlayerFormValues {
@@ -104,6 +107,7 @@ function toFormValues(row: Player): PlayerFormValues {
     profileLink: row.profileLink,
     club: row.club,
     points: String(row.points),
+    isActive: row.isActive,
   };
 }
 
@@ -199,6 +203,9 @@ export function PlayersAdminClient({ initialData }: PlayersAdminClientProps) {
 
     startTransition(async () => {
       try {
+        let entityId: string | undefined;
+        let previousActive: boolean | undefined;
+
         if (editingRow) {
           const result = await updatePlayerAction(editingRow.userId, {
             name: values.name.trim(),
@@ -215,11 +222,13 @@ export function PlayersAdminClient({ initialData }: PlayersAdminClientProps) {
           });
 
           if (result.error) {
-            toast.error(result.error);
+            toast.error(result.error, { duration: 6000 });
             return;
           }
 
-          toast.success(result.success ?? 'Player updated successfully.');
+          entityId = editingRow.userId;
+          previousActive = editingRow.isActive;
+          toast.success(result.success);
         } else {
           const result = await createPlayerAction({
             userType: 'Player',
@@ -238,14 +247,25 @@ export function PlayersAdminClient({ initialData }: PlayersAdminClientProps) {
               points: Number(values.points),
             },
           });
-          console.log('🚀 ~ onSubmit ~ result:', result);
 
           if (result.error) {
-            toast.error(result.error);
+            toast.error(result.error, { duration: 6000 });
             return;
           }
 
-          toast.success(result.success ?? 'Player registered successfully.');
+          entityId = result.id;
+          toast.success(result.success);
+        }
+
+        const statusError = await syncIsActiveAfterSave({
+          entityId,
+          previousActive,
+          nextActive: values.isActive,
+          sync: () => togglePlayerActiveAction(entityId!, values.isActive),
+        });
+        if (statusError) {
+          toast.error(statusError, { duration: 6000 });
+          return;
         }
 
         setSheetOpen(false);
@@ -668,6 +688,17 @@ export function PlayersAdminClient({ initialData }: PlayersAdminClientProps) {
                       }
                     />
                   </div>
+
+                  <AdminFormActiveField
+                    id="player-is-active"
+                    checked={form.watch('isActive')}
+                    onChange={(value) =>
+                      form.setValue('isActive', value, {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      })
+                    }
+                  />
                 </div>
               </div>
               <SheetFooter className="bg-background shrink-0 gap-2 border-t p-4 sm:flex-row sm:justify-end sm:p-6">

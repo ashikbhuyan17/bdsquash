@@ -1,5 +1,11 @@
 import type { Metadata } from 'next';
 import { BsrfHome } from '@/components/home/bsrf-home';
+import {
+  getFallbackHeroSlides,
+  HERO_GALLERY_SLIDE_COUNT,
+  mapGalleryItemsToHeroSlides,
+} from '@/lib/home/hero-gallery';
+import { fetchPublicMediaGallery } from '@/lib/media-gallery';
 
 export const metadata: Metadata = {
   title:
@@ -18,6 +24,21 @@ export const metadata: Metadata = {
   ],
 };
 
-export default function Home() {
-  return <BsrfHome />;
+async function loadHeroSlides() {
+  try {
+    const gallery = await fetchPublicMediaGallery({
+      pageNumber: 1,
+      pageSize: HERO_GALLERY_SLIDE_COUNT,
+      galleryType: 'GalleryImage',
+    });
+    const slides = mapGalleryItemsToHeroSlides(gallery.data);
+    return slides.length > 0 ? slides : getFallbackHeroSlides();
+  } catch {
+    return getFallbackHeroSlides();
+  }
+}
+
+export default async function Home() {
+  const heroSlides = await loadHeroSlides();
+  return <BsrfHome heroSlides={heroSlides} />;
 }

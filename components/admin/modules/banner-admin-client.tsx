@@ -15,6 +15,7 @@ import { ListPagination } from "@/components/admin/shared/list-pagination"
 import { RowIconActions } from "@/components/admin/shared/row-icon-actions"
 import { Button } from "@/components/ui/button"
 import { adminBtnPrimary, adminTableHeaderRowClass } from "@/lib/admin/admin-ui"
+import { formPlaceholders } from "@/lib/admin/form-placeholders"
 import { Badge } from "@/components/ui/badge"
 import { Form } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -317,7 +318,7 @@ export function BannerAdminClient() {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="banner-title">Title</Label>
-                    <Input id="banner-title" autoComplete="off" {...form.register("title")} />
+                    <Input id="banner-title" autoComplete="off" placeholder={formPlaceholders.title} {...form.register("title")} />
                     {form.formState.errors.title?.message != null && (
                       <p className="text-destructive text-sm" role="alert">
                         {String(form.formState.errors.title.message)}
@@ -326,7 +327,7 @@ export function BannerAdminClient() {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="banner-description">Description</Label>
-                    <Textarea id="banner-description" rows={3} {...form.register("description")} />
+                    <Textarea id="banner-description" rows={3} placeholder={formPlaceholders.description} {...form.register("description")} />
                     {form.formState.errors.description?.message != null && (
                       <p className="text-destructive text-sm" role="alert">
                         {String(form.formState.errors.description.message)}
@@ -339,6 +340,7 @@ export function BannerAdminClient() {
                       id="banner-link"
                       type="url"
                       autoComplete="off"
+                      placeholder={formPlaceholders.bannerLink}
                       {...form.register("bannerLink")}
                     />
                     {form.formState.errors.bannerLink?.message != null && (

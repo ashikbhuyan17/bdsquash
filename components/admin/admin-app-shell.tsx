@@ -3,17 +3,23 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { logoutAction } from "@/app/actions/auth"
 import {
+  CalendarDaysIcon,
+  CalendarIcon,
+  CircleHelpIcon,
   HomeIcon,
-  ImageIcon,
+  // ImageIcon,
   ImagesIcon,
-  InfoIcon,
+  // InfoIcon,
   LayoutDashboardIcon,
   LogOutIcon,
   MenuIcon,
-  NewspaperIcon,
+  // NewspaperIcon,
   PanelLeftCloseIcon,
   PanelLeftOpenIcon,
+  UserCircleIcon,
+  UserCogIcon,
   UsersIcon,
 } from "lucide-react"
 
@@ -22,29 +28,44 @@ import { cn } from "@/lib/utils"
 
 const nav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboardIcon },
-  { href: "/admin/banner", label: "Banner", icon: ImageIcon },
-  { href: "/admin/news", label: "News", icon: NewspaperIcon },
+  // { href: "/admin/banner", label: "Banner", icon: ImageIcon },
+  // { href: "/admin/news", label: "News", icon: NewspaperIcon },
+  { href: "/admin/event-types", label: "Event types", icon: CalendarDaysIcon },
+  { href: "/admin/events", label: "Events", icon: CalendarIcon },
   { href: "/admin/players", label: "Players", icon: UsersIcon },
+  { href: "/admin/officials", label: "Officials", icon: UserCogIcon },
   { href: "/admin/gallery", label: "Gallery", icon: ImagesIcon },
-  { href: "/admin/about", label: "About", icon: InfoIcon },
+  { href: "/admin/faqs", label: "FAQs", icon: CircleHelpIcon },
+  // { href: "/admin/about", label: "About", icon: InfoIcon },
+  { href: "/admin/profile", label: "Profile", icon: UserCircleIcon },
 ] as const
 
 const titles: Record<string, string> = {
   "/admin": "Dashboard",
   "/admin/banner": "Banner management",
   "/admin/news": "News & announcements",
+  "/admin/event-types": "Event types",
+  "/admin/events": "Events",
   "/admin/players": "Player rankings",
+  "/admin/officials": "Coaches & officials",
   "/admin/gallery": "Media gallery",
+  "/admin/faqs": "FAQs",
   "/admin/about": "About section",
+  "/admin/profile": "Admin profile",
 }
 
 const subtitles: Record<string, string> = {
   "/admin": "Overview and quick access to your modules.",
   "/admin/banner": "View and edit home hero banners and links.",
   "/admin/news": "View all news items and campaign posts.",
-  "/admin/players": "View all players and national rankings.",
+  "/admin/event-types": "Manage event categories for tournaments and listings.",
+  "/admin/events": "Create events, set schedules, and filter by status or type.",
+  "/admin/players": "Register players, rankings, clubs, and profile details.",
+  "/admin/officials": "Register coaches and officials with profile details.",
   "/admin/gallery": "View album entries and public gallery links.",
+  "/admin/faqs": "Create and manage frequently asked questions.",
   "/admin/about": "Manage mission, vision, and leadership content.",
+  "/admin/profile": "Update your name, email, and phone number.",
 }
 
 function titleForPath(path: string) {
@@ -146,13 +167,15 @@ export function AdminAppShell({ children }: { children: React.ReactNode }) {
               <HomeIcon className="size-3.5" />
               <span className={cn(collapsed && "lg:sr-only")}>View site</span>
             </Link>
-            <Link
-              href="/"
-              className="text-rose-600 hover:bg-rose-50 flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs font-medium transition-colors"
-            >
-              <LogOutIcon className="size-3.5" />
-              <span className={cn(collapsed && "lg:sr-only")}>Logout</span>
-            </Link>
+            <form action={logoutAction}>
+              <button
+                type="submit"
+                className="text-rose-600 hover:bg-rose-50 flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-xs font-medium transition-colors"
+              >
+                <LogOutIcon className="size-3.5" />
+                <span className={cn(collapsed && "lg:sr-only")}>Logout</span>
+              </button>
+            </form>
           </div>
         </aside>
 

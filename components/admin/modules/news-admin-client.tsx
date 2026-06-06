@@ -16,6 +16,7 @@ import { ListPagination } from "@/components/admin/shared/list-pagination"
 import { RowIconActions } from "@/components/admin/shared/row-icon-actions"
 import { Button } from "@/components/ui/button"
 import { adminBtnPrimary, adminTableHeaderRowClass } from "@/lib/admin/admin-ui"
+import { formPlaceholders } from "@/lib/admin/form-placeholders"
 import { Badge } from "@/components/ui/badge"
 import { Form } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -326,7 +327,7 @@ export function NewsAdminClient() {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="news-title">Title</Label>
-                    <Input id="news-title" autoComplete="off" {...form.register("title")} />
+                    <Input id="news-title" autoComplete="off" placeholder={formPlaceholders.title} {...form.register("title")} />
                     {form.formState.errors.title?.message != null && (
                       <p className="text-destructive text-sm" role="alert">
                         {String(form.formState.errors.title.message)}
@@ -335,7 +336,7 @@ export function NewsAdminClient() {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="news-description">Description</Label>
-                    <Textarea id="news-description" rows={3} {...form.register("description")} />
+                    <Textarea id="news-description" rows={3} placeholder={formPlaceholders.description} {...form.register("description")} />
                     {form.formState.errors.description?.message != null && (
                       <p className="text-destructive text-sm" role="alert">
                         {String(form.formState.errors.description.message)}
@@ -348,6 +349,7 @@ export function NewsAdminClient() {
                       id="news-link"
                       type="url"
                       autoComplete="off"
+                      placeholder={formPlaceholders.newsLink}
                       {...form.register("newsLink")}
                     />
                     {form.formState.errors.newsLink?.message != null && (

@@ -72,7 +72,7 @@ function AnimatedCounter({
 	const motionValue = useMotionValue(0);
 	const springValue = useSpring(motionValue, {
 		damping: 20,
-		stiffness: 50,
+		stiffness: Math.max(10, 50 / duration),
 		mass: 1,
 	});
 
@@ -100,7 +100,7 @@ function AnimatedCounter({
 			motionValue.set(0);
 		}
 		return () => clearTimeout(timeout);
-	}, [isInView, value, motionValue, delay]);
+	}, [isInView, value, motionValue, delay, duration]);
 
 	return (
 		<motion.div

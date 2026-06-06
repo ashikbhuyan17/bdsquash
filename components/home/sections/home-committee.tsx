@@ -1,6 +1,12 @@
 import Link from 'next/link';
 import { CommitteeMemberGrid } from '@/components/bsrf/shared/committee-member-card';
-export function HomeCommittee() {
+import type { PublicCommitteeMember } from '@/lib/officials/public-officials.types';
+
+type HomeCommitteeProps = {
+  members: PublicCommitteeMember[];
+};
+
+export function HomeCommittee({ members }: HomeCommitteeProps) {
   return (
     <section
       className="bg-bsrf-primary px-4 py-12 sm:px-[5%] md:px-[8%] md:py-20"
@@ -21,19 +27,9 @@ export function HomeCommittee() {
           >
             View All →
           </Link>
-          {/* <Link
-            className="text-xs uppercase tracking-[0.12em] text-bsrf-green transition-opacity hover:opacity-70"
-            href="/contact"
-          >
-            Contact The Office →
-          </Link> */}
         </div>
       </div>
-      <CommitteeMemberGrid />
-      <p className="mt-6 text-center text-xs text-bsrf-muted">
-        Names shown are placeholders — to be updated with the current elected
-        committee.
-      </p>
+      <CommitteeMemberGrid members={members} />
     </section>
   );
 }

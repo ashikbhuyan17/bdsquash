@@ -1,5 +1,7 @@
 import Link from 'next/link';
-import { HOME_PLAYERS } from '@/lib/home/data';
+import { HomeImage } from '@/components/home/home-image';
+import type { HomeFeaturedPlayer } from '@/lib/players/public-players.types';
+
 function PlayerSilhouette() {
   return (
     <div className="relative mb-[-10px] h-20 w-20 rounded-t-full rounded-b-none bg-[#2c2c2c]">
@@ -8,7 +10,11 @@ function PlayerSilhouette() {
   );
 }
 
-export function HomePlayers() {
+type HomePlayersProps = {
+  players: HomeFeaturedPlayer[];
+};
+
+export function HomePlayers({ players }: HomePlayersProps) {
   return (
     <section className="bg-bsrf-surface px-4 py-12 sm:px-[5%] md:px-[8%] md:py-20" id="players">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
@@ -23,13 +29,23 @@ export function HomePlayers() {
         </Link>
       </div>
       <div className="flex gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {HOME_PLAYERS.map((player) => (
+        {players.map((player) => (
           <article
             className="w-[180px] min-w-[180px] border border-bsrf-border bg-bsrf-card transition-colors hover:border-bsrf-green"
-            key={player.name}
+            key={player.userId}
           >
             <div className="relative flex h-[200px] items-end justify-center overflow-hidden bg-[#1d1d1d]">
-              <PlayerSilhouette />
+              {player.profileImageUrl ? (
+                <div className="absolute inset-0">
+                  <HomeImage
+                    src={player.profileImageUrl}
+                    alt={player.name}
+                    fallbackLabel={player.name}
+                  />
+                </div>
+              ) : (
+                <PlayerSilhouette />
+              )}
             </div>
             <div className="flex flex-col gap-1 p-4">
               <div className="font-bebas text-2xl leading-none text-bsrf-green">

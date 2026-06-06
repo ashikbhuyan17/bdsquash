@@ -1,6 +1,11 @@
 import Link from 'next/link';
-import { HOME_EVENTS } from '@/lib/home/data';
-export function HomeEvents() {
+import type { HomeEventCard } from '@/lib/home/public-events';
+
+type HomeEventsProps = {
+  events: HomeEventCard[];
+};
+
+export function HomeEvents({ events }: HomeEventsProps) {
   return (
     <section className="bg-bsrf-primary px-4 py-12 sm:px-[5%] md:px-[8%] md:py-20" id="events">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
@@ -15,10 +20,10 @@ export function HomeEvents() {
         </Link>
       </div>
       <div className="grid gap-4 max-[980px]:grid-cols-1 min-[981px]:grid-cols-3">
-        {HOME_EVENTS.map((event) => (
+        {events.map((event) => (
           <article
             className="flex gap-5 border border-bsrf-border border-l-[3px] border-l-bsrf-green bg-bsrf-surface p-6 transition-all hover:-translate-y-0.5 hover:border-l-bsrf-red"
-            key={event.name}
+            key={event.id}
           >
             <div className="min-w-[56px] text-center">
               <div className="font-bebas text-5xl leading-[0.9] text-bsrf-green">
@@ -34,7 +39,7 @@ export function HomeEvents() {
               </div>
               <div className="text-xs text-bsrf-muted">{event.loc}</div>
               <span className="inline-block self-start bg-bsrf-green px-2.5 py-[5px] text-[10px] font-semibold uppercase tracking-[0.1em] text-black">
-                Upcoming
+                {event.status}
               </span>
             </div>
           </article>

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import React from 'react'
 import { BsrfCommitteeDetails } from '@/components/bsrf/details/committee-details'
+import { loadCommitteeMembers } from '@/lib/officials/public-officials'
 
 export const metadata: Metadata = {
   title: 'Managing Committee | Bangladesh Squash Rackets Federation',
@@ -8,6 +8,8 @@ export const metadata: Metadata = {
     'Meet the elected managing committee and office bearers of the Bangladesh Squash Rackets Federation.',
 }
 
-export default function CommitteePage() {
-  return <BsrfCommitteeDetails />
+export default async function CommitteePage() {
+  const members = await loadCommitteeMembers()
+
+  return <BsrfCommitteeDetails members={members} />
 }

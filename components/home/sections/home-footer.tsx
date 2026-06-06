@@ -81,10 +81,10 @@ export function HomeFooter() {
           <div className="flex gap-2.5 text-[13px] leading-[2.2] text-bsrf-muted">
             <span>✉</span>
             <a
-              href="mailto:info@bssf.com.bd"
+              href="mailto:info@bdsquash.org"
               className="transition-colors hover:text-bsrf-green"
             >
-              info@bssf.com.bd
+              info@bdsquash.org
             </a>
           </div>
           <div className="flex gap-2.5 text-[13px] leading-[2.2] text-bsrf-muted">

@@ -18,11 +18,28 @@ function buildOfficialsQuery(filters: OfficialFilters): string {
   params.set('pageNumber', String(filters.pageNumber));
   params.set('pageSize', String(filters.pageSize));
 
-  if (filters.officialType) {
-    params.set('officialType', filters.officialType);
+  return `/officials?${params.toString()}`;
+}
+
+export async function fetchPublicOfficials(
+  pageNumber: number,
+  pageSize: number,
+): Promise<OfficialListData> {
+  const params = new URLSearchParams();
+  params.set('pageNumber', String(pageNumber));
+  params.set('pageSize', String(pageSize));
+  params.set('active', 'true');
+
+  const response = await getRequest<ApiDataResponse<OfficialListData>>(
+    `/officials-for-user?${params.toString()}`,
+    { anonymous: true, next: { revalidate: 60 } },
+  );
+
+  if (!response.isValid || !response.data) {
+    throw new Error(response.message || 'Failed to load committee members.');
   }
 
-  return `/officials?${params.toString()}`;
+  return response.data;
 }
 
 export async function fetchOfficials(

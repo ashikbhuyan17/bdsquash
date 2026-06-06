@@ -8,6 +8,7 @@ import type {
   EventFilters,
   EventListData,
   EventUpdatePayload,
+  PublicEventFilters,
 } from "@/lib/types/events"
 
 function buildEventsQuery(filters: EventFilters): string {
@@ -29,6 +30,36 @@ function buildEventsQuery(filters: EventFilters): string {
   }
 
   return `/events?${params.toString()}`
+}
+
+function buildPublicEventsQuery(filters: PublicEventFilters): string {
+  const params = new URLSearchParams()
+  params.set("pageNumber", String(filters.pageNumber))
+  params.set("pageSize", String(filters.pageSize))
+
+  if (filters.eventTypeId !== undefined) {
+    params.set("eventTypeId", String(filters.eventTypeId))
+  }
+  if (filters.eventStatus) {
+    params.set("eventStatus", filters.eventStatus)
+  }
+
+  return `/events/users?${params.toString()}`
+}
+
+export async function fetchPublicEvents(
+  filters: PublicEventFilters
+): Promise<EventListData> {
+  const response = await getRequest<ApiDataResponse<EventListData>>(
+    buildPublicEventsQuery(filters),
+    { anonymous: true, next: { revalidate: 60 } }
+  )
+
+  if (!response.isValid || !response.data) {
+    throw new Error(response.message || "Failed to load events.")
+  }
+
+  return response.data
 }
 
 export async function fetchEvents(filters: EventFilters): Promise<EventListData> {

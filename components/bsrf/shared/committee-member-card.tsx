@@ -1,4 +1,5 @@
-import { HOME_COMMITTEE } from '@/lib/home/data';
+import { HomeImage } from '@/components/home/home-image';
+import type { PublicCommitteeMember } from '@/lib/officials/public-officials.types';
 import { cn } from '@/lib/utils';
 
 function MemberSilhouette() {
@@ -9,16 +10,14 @@ function MemberSilhouette() {
   );
 }
 
-type CommitteeMember = (typeof HOME_COMMITTEE)[number];
-
-export function CommitteeMemberCard({ member }: { member: CommitteeMember }) {
-  const isLead = 'lead' in member && member.lead;
-
+export function CommitteeMemberCard({ member }: { member: PublicCommitteeMember }) {
   return (
     <article
       className={cn(
         'border border-bsrf-border bg-bsrf-card transition-all hover:-translate-y-[3px] hover:border-t-bsrf-green',
-        isLead ? 'border-t-[3px] border-t-bsrf-red' : 'border-t-[3px] border-t-transparent'
+        member.lead
+          ? 'border-t-[3px] border-t-bsrf-red'
+          : 'border-t-[3px] border-t-transparent'
       )}
     >
       <div
@@ -30,13 +29,23 @@ export function CommitteeMemberCard({ member }: { member: CommitteeMember }) {
           aria-hidden="true"
           className="absolute left-3 top-3 h-3.5 w-3.5 rounded-full bg-bsrf-red"
         />
-        <MemberSilhouette />
+        {member.profileImageUrl ? (
+          <div className="absolute inset-0">
+            <HomeImage
+              src={member.profileImageUrl}
+              alt={member.name}
+              fallbackLabel={member.role}
+            />
+          </div>
+        ) : (
+          <MemberSilhouette />
+        )}
       </div>
       <div className="px-3 pb-3 pt-3 sm:px-[18px] sm:pb-[18px] sm:pt-4">
         <div
           className={cn(
             'mb-1.5 text-[11px] uppercase tracking-[0.14em]',
-            isLead ? 'text-bsrf-red' : 'text-bsrf-green'
+            member.lead ? 'text-bsrf-red' : 'text-bsrf-green'
           )}
         >
           {member.role}
@@ -49,7 +58,12 @@ export function CommitteeMemberCard({ member }: { member: CommitteeMember }) {
   );
 }
 
-export function CommitteeMemberGrid({ className }: { className?: string }) {
+type CommitteeMemberGridProps = {
+  members: PublicCommitteeMember[];
+  className?: string;
+};
+
+export function CommitteeMemberGrid({ members, className }: CommitteeMemberGridProps) {
   return (
     <div
       className={cn(
@@ -57,8 +71,8 @@ export function CommitteeMemberGrid({ className }: { className?: string }) {
         className
       )}
     >
-      {HOME_COMMITTEE.map((member) => (
-        <CommitteeMemberCard key={member.role} member={member} />
+      {members.map((member) => (
+        <CommitteeMemberCard key={member.id} member={member} />
       ))}
     </div>
   );

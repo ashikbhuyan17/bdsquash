@@ -13,7 +13,6 @@ import {
   updateOfficialAction,
 } from "@/app/actions/officials"
 import { AdminFormActiveField } from "@/components/admin/shared/admin-form-active-field"
-import { OfficialsFiltersBar } from "@/components/admin/shared/officials-filters-bar"
 import { AdminListCard } from "@/components/admin/shared/admin-list-card"
 import { ImageDataUrlUpload } from "@/components/admin/shared/image-data-url-upload"
 import { ImageThumb } from "@/components/admin/shared/image-thumb"
@@ -26,12 +25,6 @@ import { Badge } from "@/components/ui/badge"
 import { Form } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  AdminSelectContent,
-  AdminSelectItem,
-  AdminSelectTrigger,
-} from "@/components/admin/shared/admin-select"
-import { Select, SelectValue } from "@/components/ui/select"
 import {
   Sheet,
   SheetContent,
@@ -56,12 +49,10 @@ import { syncIsActiveAfterSave } from "@/lib/admin/sync-active-status"
 import { officialFormSchema, type OfficialFormValues } from "@/lib/admin/schemas"
 import { getProfileImageUrl, toApiMediaValue } from "@/lib/media-urls"
 import {
-  OFFICIAL_TYPES,
+  COMMITTEE_MEMBER_TYPE,
   type Official,
   type OfficialFilters,
   type OfficialListData,
-  type OfficialsFilterState,
-  type OfficialType,
 } from "@/lib/types/officials"
 
 function FieldError({ message }: { message?: string }) {
@@ -74,15 +65,10 @@ function FieldError({ message }: { message?: string }) {
   )
 }
 
-const defaultFilters: OfficialsFilterState = {
-  officialType: "all",
-}
-
 const defaultForm: OfficialFormValues = {
   name: "",
   email: "",
   phoneNumber: "",
-  officialType: "",
   designation: "",
   description: "",
   profileLink: "",
@@ -95,7 +81,6 @@ function toFormValues(row: Official): OfficialFormValues {
     name: row.name,
     email: row.email,
     phoneNumber: row.phoneNumber,
-    officialType: row.officialType,
     designation: row.designation,
     description: row.description,
     profileLink: row.profileLink,
@@ -104,15 +89,10 @@ function toFormValues(row: Official): OfficialFormValues {
   }
 }
 
-function toApiFilters(
-  page: number,
-  pageSize: number,
-  filters: OfficialsFilterState
-): OfficialFilters {
+function toApiFilters(page: number, pageSize: number): OfficialFilters {
   return {
     pageNumber: page + 1,
     pageSize,
-    officialType: filters.officialType === "all" ? undefined : filters.officialType,
   }
 }
 
@@ -122,7 +102,6 @@ type OfficialsAdminClientProps = {
 
 export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps) {
   const [listData, setListData] = useState(initialData)
-  const [filters, setFilters] = useState<OfficialsFilterState>(defaultFilters)
   const [page, setPage] = useState(Math.max(initialData.pageNumber - 1, 0))
   const [pageSize, setPageSize] = useState<(typeof PAGE_SIZES)[number]>(
     PAGE_SIZES.includes(initialData.pageSize as (typeof PAGE_SIZES)[number])
@@ -140,10 +119,10 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
     defaultValues: defaultForm,
   })
 
-  const loadOfficials = useCallback(
-    async (nextPage: number, nextPageSize: number, nextFilters: OfficialsFilterState) => {
+  const loadCommitteeMembers = useCallback(
+    async (nextPage: number, nextPageSize: number) => {
       setLoading(true)
-      const result = await getOfficialsAction(toApiFilters(nextPage, nextPageSize, nextFilters))
+      const result = await getOfficialsAction(toApiFilters(nextPage, nextPageSize))
       setLoading(false)
 
       if (result.error) {
@@ -161,13 +140,8 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
       skipInitialFetch.current = false
       return
     }
-    void loadOfficials(page, pageSize, filters)
-  }, [page, pageSize, filters, loadOfficials])
-
-  const applyFilters = (next: OfficialsFilterState) => {
-    setFilters(next)
-    setPage(0)
-  }
+    void loadCommitteeMembers(page, pageSize)
+  }, [page, pageSize, loadCommitteeMembers])
 
   const openCreate = useCallback(() => {
     setEditing(null)
@@ -196,7 +170,7 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
       name: values.name.trim(),
       phoneNumber: values.phoneNumber.trim(),
       email: values.email.trim(),
-      officialType: values.officialType as OfficialType,
+      officialType: COMMITTEE_MEMBER_TYPE,
       designation: values.designation.trim(),
       description: values.description.trim(),
       profileLink: values.profileLink.trim(),
@@ -229,7 +203,7 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
 
       toast.success(result.success)
       setSheetOpen(false)
-      await loadOfficials(page, pageSize, filters)
+      await loadCommitteeMembers(page, pageSize)
     })
   })
 
@@ -241,7 +215,7 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
         return
       }
       toast.success(result.success)
-      await loadOfficials(page, pageSize, filters)
+      await loadCommitteeMembers(page, pageSize)
     })
   }
 
@@ -258,22 +232,16 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
               <span className="inline-flex size-8 items-center justify-center rounded-lg bg-[#1b4332]/10 text-[#1b4332]">
                 <UserCogIcon className="size-4" />
               </span>
-              <h2 className="text-slate-800 text-base font-semibold">
-                Coaches & officials
-              </h2>
+              <h2 className="text-slate-800 text-base font-semibold">COMMITTEE</h2>
             </div>
             <p className="text-slate-500 text-sm">
-              Register and manage federation coaches and officials.
+              Register and manage federation committee members.
             </p>
           </div>
           <Button type="button" className={adminBtnPrimary} onClick={openCreate}>
             <PlusIcon className="size-4" />
-            New official
+            New member
           </Button>
-        </div>
-
-        <div className="border-slate-100 bg-slate-50/30 px-4 py-3 sm:px-5 sm:py-3.5">
-          <OfficialsFiltersBar filters={filters} onChange={applyFilters} />
         </div>
 
         {loading ? (
@@ -288,8 +256,8 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
             role="status"
           >
             <UserCogIcon className="text-slate-300 size-10" />
-            <p className="text-slate-600 text-sm font-medium">No officials found</p>
-            <p className="text-xs">Adjust filters or register a new coach or official.</p>
+            <p className="text-slate-600 text-sm font-medium">No committee members found</p>
+            <p className="text-xs">Register a new committee member to get started.</p>
           </div>
         ) : (
           <>
@@ -299,7 +267,6 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
                   <TableRow className={adminTableHeaderRowClass}>
                     <TableHead className="w-16">Photo</TableHead>
                     <TableHead>Name</TableHead>
-                    <TableHead className="hidden lg:table-cell">Type</TableHead>
                     <TableHead className="hidden xl:table-cell">Designation</TableHead>
                     <TableHead className="w-28">Status</TableHead>
                     <TableHead className="w-24">Active</TableHead>
@@ -319,9 +286,6 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
                         <p className="text-neutral-900 font-medium break-words">{row.name}</p>
                         <p className="text-neutral-500 text-xs">{row.phoneNumber}</p>
                         <p className="text-neutral-400 text-xs">{row.email}</p>
-                      </TableCell>
-                      <TableCell className="hidden text-sm text-neutral-600 lg:table-cell">
-                        {row.officialType}
                       </TableCell>
                       <TableCell className="hidden max-w-[12rem] truncate text-sm text-neutral-600 xl:table-cell">
                         {row.designation}
@@ -363,9 +327,7 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
                     />
                     <div className="min-w-0 flex-1">
                       <p className="text-slate-800 text-sm font-medium break-words">{row.name}</p>
-                      <p className="text-slate-500 text-xs">
-                        {row.officialType} · {row.designation}
-                      </p>
+                      <p className="text-slate-500 text-xs">{row.designation}</p>
                     </div>
                   </div>
                   <p className="text-slate-500 text-xs">{row.phoneNumber}</p>
@@ -408,45 +370,19 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
           <Form {...form}>
             <form onSubmit={onSubmit} className="flex h-full max-h-svh flex-col">
               <SheetHeader className="shrink-0 space-y-1 border-b p-4 sm:p-6">
-                <SheetTitle>{editing ? "Edit official" : "Register official"}</SheetTitle>
+                <SheetTitle>
+                  {editing ? "Edit committee member" : "Register committee member"}
+                </SheetTitle>
                 <SheetDescription>
-                  Add coach or official profile details and photo.
+                  Add committee member profile details and photo.
                 </SheetDescription>
               </SheetHeader>
               <div className="min-h-0 flex-1 overflow-y-auto">
                 <div className="flex flex-col gap-4 p-4 sm:p-6">
-                  <div className="grid w-full gap-2">
-                    <Label htmlFor="official-type">Official type</Label>
-                    <Select
-                      value={form.watch("officialType") || undefined}
-                      onValueChange={(value) =>
-                        form.setValue("officialType", value, {
-                          shouldValidate: true,
-                          shouldDirty: true,
-                        })
-                      }
-                    >
-                      <AdminSelectTrigger
-                        id="official-type"
-                        aria-invalid={!!form.formState.errors.officialType}
-                      >
-                        <SelectValue placeholder={formPlaceholders.selectOfficialType} />
-                      </AdminSelectTrigger>
-                      <AdminSelectContent>
-                        {OFFICIAL_TYPES.map((type) => (
-                          <AdminSelectItem key={type} value={type}>
-                            {type}
-                          </AdminSelectItem>
-                        ))}
-                      </AdminSelectContent>
-                    </Select>
-                    <FieldError message={form.formState.errors.officialType?.message} />
-                  </div>
-
                   <div className="grid gap-2">
-                    <Label htmlFor="official-name">Full name</Label>
+                    <Label htmlFor="committee-name">Full name</Label>
                     <Input
-                      id="official-name"
+                      id="committee-name"
                       autoComplete="off"
                       placeholder={formPlaceholders.fullName}
                       {...form.register("name")}
@@ -456,9 +392,9 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
 
                   <div className="grid gap-3 sm:grid-cols-2">
                     <div className="grid gap-2">
-                      <Label htmlFor="official-email">Email</Label>
+                      <Label htmlFor="committee-email">Email</Label>
                       <Input
-                        id="official-email"
+                        id="committee-email"
                         type="email"
                         autoComplete="off"
                         placeholder={formPlaceholders.email}
@@ -467,9 +403,9 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
                       <FieldError message={form.formState.errors.email?.message} />
                     </div>
                     <div className="grid gap-2">
-                      <Label htmlFor="official-phone">Phone number</Label>
+                      <Label htmlFor="committee-phone">Phone number</Label>
                       <Input
-                        id="official-phone"
+                        id="committee-phone"
                         inputMode="numeric"
                         maxLength={11}
                         autoComplete="off"
@@ -481,9 +417,9 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
                   </div>
 
                   <div className="grid gap-2">
-                    <Label htmlFor="official-designation">Designation</Label>
+                    <Label htmlFor="committee-designation">Designation</Label>
                     <Input
-                      id="official-designation"
+                      id="committee-designation"
                       autoComplete="off"
                       placeholder={formPlaceholders.designation}
                       {...form.register("designation")}
@@ -492,9 +428,9 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
                   </div>
 
                   <div className="grid gap-2">
-                    <Label htmlFor="official-description">Description</Label>
+                    <Label htmlFor="committee-description">Description</Label>
                     <Textarea
-                      id="official-description"
+                      id="committee-description"
                       rows={4}
                       placeholder={formPlaceholders.description}
                       {...form.register("description")}
@@ -503,9 +439,9 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
                   </div>
 
                   <div className="grid gap-2">
-                    <Label htmlFor="official-profile-link">Profile link</Label>
+                    <Label htmlFor="committee-profile-link">Profile link</Label>
                     <Input
-                      id="official-profile-link"
+                      id="committee-profile-link"
                       type="url"
                       autoComplete="off"
                       placeholder={formPlaceholders.profileLink}
@@ -515,9 +451,9 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
                   </div>
 
                   <div className="grid gap-2">
-                    <Label htmlFor="official-profile-image">Profile photo</Label>
+                    <Label htmlFor="committee-profile-image">Profile photo</Label>
                     <ImageDataUrlUpload
-                      id="official-profile-image"
+                      id="committee-profile-image"
                       value={form.watch("profileImage")}
                       onChange={(value) =>
                         form.setValue("profileImage", value, {
@@ -529,7 +465,7 @@ export function OfficialsAdminClient({ initialData }: OfficialsAdminClientProps)
                   </div>
 
                   <AdminFormActiveField
-                    id="official-is-active"
+                    id="committee-is-active"
                     checked={form.watch("isActive")}
                     onChange={(value) =>
                       form.setValue("isActive", value, {

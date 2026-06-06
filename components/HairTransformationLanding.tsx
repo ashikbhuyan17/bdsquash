@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import apple from "../public/apple.png";
 
 export default function HairTransformationLanding() {
@@ -147,8 +146,8 @@ export default function HairTransformationLanding() {
 				</div>
 
 				{/* Right Section - Upload Card */}
-				<div>
-					<img src="/hero.png" alt="hero" />
+				<div className="relative aspect-[4/5] w-full">
+					<Image src="/hero.png" alt="hero" fill className="object-cover" />
 				</div>
 				{/* <div
           className="relative rounded-[35px] p-8 shadow-2xl animate-right"

@@ -106,8 +106,15 @@ const defaultForm: MediaGalleryFormValues = {
   category: "",
   image: "",
   newsLink: "",
+  title: "",
   description: "",
   isActive: true,
+}
+
+function galleryItemLabel(row: MediaGalleryItem): string {
+  const title = (row.title ?? "").trim()
+  const description = (row.description ?? "").trim()
+  return title || description || `Item ${row.id}`
 }
 
 function toFormValues(row: MediaGalleryItem): MediaGalleryFormValues {
@@ -116,7 +123,8 @@ function toFormValues(row: MediaGalleryItem): MediaGalleryFormValues {
     category: row.category,
     image: row.image ? getMediaGalleryImageUrl(row.image) : "",
     newsLink: row.newsLink,
-    description: row.description,
+    title: row.title ?? "",
+    description: row.description ?? "",
     isActive: row.isActive,
   }
 }
@@ -245,6 +253,7 @@ export function GalleryAdminClient({ initialData }: GalleryAdminClientProps) {
       category: values.category as GalleryCategory,
       image,
       newsLink: values.newsLink.trim(),
+      title: values.title.trim(),
       description: values.description.trim(),
     }
 
@@ -356,12 +365,12 @@ export function GalleryAdminClient({ initialData }: GalleryAdminClientProps) {
                       <TableCell>
                         <ImageThumb
                           src={getMediaGalleryImageUrl(row.image)}
-                          alt={row.description}
+                          alt={galleryItemLabel(row)}
                         />
                       </TableCell>
                       <TableCell className="max-w-[14rem]">
                         <p className="text-neutral-900 line-clamp-2 font-medium break-words">
-                          {row.description}
+                          {galleryItemLabel(row)}
                         </p>
                         <p className="text-neutral-500 text-xs">
                           {GALLERY_TYPE_LABELS[row.galleryType]}
@@ -406,12 +415,12 @@ export function GalleryAdminClient({ initialData }: GalleryAdminClientProps) {
                   <div className="flex gap-3">
                     <ImageThumb
                       src={getMediaGalleryImageUrl(row.image)}
-                      alt={row.description}
+                      alt={galleryItemLabel(row)}
                       className="size-12"
                     />
                     <div className="min-w-0 flex-1">
                       <p className="text-slate-800 line-clamp-2 text-sm font-medium break-words">
-                        {row.description}
+                        {galleryItemLabel(row)}
                       </p>
                       <p className="text-slate-500 text-xs">
                         {GALLERY_TYPE_LABELS[row.galleryType]} · {CATEGORY_LABELS[row.category]}
@@ -511,6 +520,21 @@ export function GalleryAdminClient({ initialData }: GalleryAdminClientProps) {
                       {form.formState.errors.category?.message != null && (
                         <p className="text-destructive text-sm" role="alert">
                           {String(form.formState.errors.category.message)}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="grid gap-2">
+                      <Label htmlFor="gallery-title">Title</Label>
+                      <Input
+                        id="gallery-title"
+                        autoComplete="off"
+                        placeholder={formPlaceholders.title}
+                        {...form.register("title")}
+                      />
+                      {form.formState.errors.title?.message != null && (
+                        <p className="text-destructive text-sm" role="alert">
+                          {String(form.formState.errors.title.message)}
                         </p>
                       )}
                     </div>

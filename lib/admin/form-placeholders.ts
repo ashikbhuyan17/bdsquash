@@ -31,5 +31,4 @@ export const formPlaceholders = {
   faqQuestion: "Enter the question",
   faqAnswer: "Enter the answer",
   designation: "Enter designation",
-  selectOfficialType: "Select official type",
 } as const

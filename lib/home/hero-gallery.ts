@@ -31,7 +31,10 @@ export function mapGalleryItemsToHeroSlides(
     .slice(0, HERO_GALLERY_SLIDE_COUNT)
     .map((item) => ({
       id: item.id,
-      title: item.description.trim() || formatCategory(item.category),
+      title:
+        (item.title ?? "").trim() ||
+        (item.description ?? "").trim() ||
+        formatCategory(item.category),
       caption: formatCategory(item.category),
       imageUrl: getMediaGalleryImageUrl(item.image),
     }))

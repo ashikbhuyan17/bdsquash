@@ -1,16 +1,11 @@
-export const NEWS_FILTER_CATEGORIES = [
-  'All',
-  'Tournaments',
-  'National',
-  'Development',
-  'International',
-] as const
+import type { GalleryCategory } from '@/lib/types/media-gallery'
 
-export type NewsFilterCategory = (typeof NEWS_FILTER_CATEGORIES)[number]
+export type NewsFilterCategory = 'All' | GalleryCategory
 
 export type NewsArticle = {
+  id: number
   cat: string
-  filter: Exclude<NewsFilterCategory, 'All'>
+  filter: GalleryCategory
   title: string
   date: string
   image: string
@@ -18,8 +13,10 @@ export type NewsArticle = {
   featured?: boolean
 }
 
+/** @deprecated Static seed data — public pages use API via lib/news/public-news.ts */
 export const NEWS_ARTICLES: NewsArticle[] = [
   {
+    id: 1,
     cat: 'TOURNAMENT',
     filter: 'Tournaments',
     title: '6th Bangladesh International Squash Open 2025 Concludes',
@@ -29,24 +26,27 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     featured: true,
   },
   {
+    id: 2,
     cat: 'NATIONAL',
-    filter: 'National',
+    filter: 'NationalTeam',
     title: '5th National Squash Championship Crowns New Champions',
     date: '12 JUN 2025',
     image: '/news-02.jpg',
     link: 'https://www.daily-sun.com/printversion/details/832493',
   },
   {
-    cat: 'DEVELOPMENT',
-    filter: 'Development',
+    id: 3,
+    cat: 'TRAINING',
+    filter: 'Training',
     title: 'Junior Squash Camp Expands to Three New Districts',
     date: '28 MAY 2025',
     image: '/news-03.jpg',
     link: '/news',
   },
   {
+    id: 4,
     cat: 'NATIONAL',
-    filter: 'National',
+    filter: 'NationalTeam',
     title:
       'Victory Day Squash Championship Signals Strong Revival of Squash in Bangladesh',
     date: '24 DEC 2025',
@@ -54,6 +54,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     link: 'https://www.daily-sun.com/sports/847914',
   },
   {
+    id: 5,
     cat: 'TOURNAMENT',
     filter: 'Tournaments',
     title: 'IUB’s Monika and Raihan Shine in Victory Day Squash Tournament',
@@ -62,16 +63,18 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     link: 'https://www.dhakatribune.com/bangladesh/event/370623/iub%E2%80%99s-monika-and-raihan-shine-in-victory-day',
   },
   {
+    id: 6,
     cat: 'NATIONAL',
-    filter: 'National',
+    filter: 'NationalTeam',
     title: '5th National Squash Championship 2025 Trophy Unveiled',
     date: '12 OCT 2025',
     image: '/hero-02.jpg',
     link: 'https://www.daily-sun.com/printversion/details/832493',
   },
   {
-    cat: 'INTERNATIONAL',
-    filter: 'International',
+    id: 7,
+    cat: 'EVENTS',
+    filter: 'Events',
     title: 'IUB Shines Bright in National Squash Championship 2024',
     date: '29 APR 2024',
     image: '/news-05.jpg',

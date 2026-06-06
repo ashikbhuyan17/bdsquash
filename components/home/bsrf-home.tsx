@@ -13,7 +13,12 @@ import { HomeCommittee } from '@/components/home/sections/home-committee';
 import { HomeGallery } from '@/components/home/sections/home-gallery';
 import { HomePlayers } from '@/components/home/sections/home-players';
 import { HomeFooter } from '@/components/home/sections/home-footer';
+import type { PublicGalleryItem } from '@/lib/media-gallery/public-gallery';
+import type { HomeEventCard } from '@/lib/home/public-events';
 import type { HomeHeroSlide } from '@/lib/home/hero-gallery';
+import type { PublicCommitteeMember } from '@/lib/officials/public-officials.types';
+import type { HomeFeaturedPlayer } from '@/lib/players/public-players.types';
+import type { NewsArticle } from '@/lib/news/data';
 
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -29,9 +34,23 @@ const dmSans = DM_Sans({
 
 type BsrfHomeProps = {
   heroSlides: HomeHeroSlide[];
+  newsFeatured: NewsArticle;
+  newsSide: NewsArticle[];
+  upcomingEvents: HomeEventCard[];
+  galleryItems: PublicGalleryItem[];
+  featuredPlayers: HomeFeaturedPlayer[];
+  committeeMembers: PublicCommitteeMember[];
 };
 
-export function BsrfHome({ heroSlides }: BsrfHomeProps) {
+export function BsrfHome({
+  heroSlides,
+  newsFeatured,
+  newsSide,
+  upcomingEvents,
+  galleryItems,
+  featuredPlayers,
+  committeeMembers,
+}: BsrfHomeProps) {
   useEffect(() => {
     const timeout = window.setTimeout(() => {
       document.querySelectorAll('[data-fade-up]').forEach((el) => {
@@ -62,11 +81,11 @@ export function BsrfHome({ heroSlides }: BsrfHomeProps) {
         <HomeStats />
         <HomeAbout />
         <HomePresident />
-        <HomeNews />
-        <HomeEvents />
-        <HomeCommittee />
-        <HomeGallery />
-        <HomePlayers />
+        <HomeNews featured={newsFeatured} side={newsSide} />
+        <HomeEvents events={upcomingEvents} />
+        <HomeCommittee members={committeeMembers} />
+        <HomeGallery items={galleryItems} />
+        <HomePlayers players={featuredPlayers} />
       </main>
       <HomeFooter />
     </div>

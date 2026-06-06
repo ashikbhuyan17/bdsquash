@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { BsrfLogo } from '@/components/bsrf/shared/bsrf-logo'
 import { NavAuthActions } from '@/components/auth/nav-auth-actions'
 import { cn } from '@/lib/utils'
 
@@ -31,9 +32,7 @@ export function BsrfDetailsNav({ active }: { active?: BsrfNavKey }) {
     <>
       <nav className="sticky top-0 z-[100] flex h-[72px] w-full items-center justify-between border-b border-bsrf-border bg-[rgba(10,10,10,0.92)] px-4 backdrop-blur-md sm:px-[5%] lg:px-4 xl:h-[88px] xl:px-[8%]">
         <Link href="/" className="flex shrink-0 items-center gap-3.5">
-          <span className="font-bebas text-[28px] leading-none tracking-wide text-bsrf-green">
-            BSRF
-          </span>
+          <BsrfLogo />
           <span className="hidden max-w-[150px] border-l border-bsrf-border pl-3.5 text-[11px] leading-tight text-white md:block">
             Bangladesh Squash Rackets Federation
           </span>

@@ -1,14 +1,16 @@
-'use client'
-
 import Link from 'next/link'
-import React from 'react'
 import { CommitteeMemberGrid } from '@/components/bsrf/shared/committee-member-card'
+import type { PublicCommitteeMember } from '@/lib/officials/public-officials.types'
 import { BsrfShell } from './shared/bsrf-shell'
 import { BsrfDetailsNav } from './shared/bsrf-details-nav'
 import { BsrfDetailsFooter } from './shared/bsrf-details-footer'
 import { BsrfDetailsPageHero } from './shared/bsrf-details-page-hero'
 
-export function BsrfCommitteeDetails() {
+type BsrfCommitteeDetailsProps = {
+  members: PublicCommitteeMember[]
+}
+
+export function BsrfCommitteeDetails({ members }: BsrfCommitteeDetailsProps) {
   return (
     <BsrfShell>
       <a
@@ -45,12 +47,7 @@ export function BsrfCommitteeDetails() {
             </Link>
           </div>
 
-          <CommitteeMemberGrid />
-
-          <p className="mt-6 text-center text-xs text-bsrf-muted">
-            Names shown are placeholders — to be updated with the current elected
-            committee.
-          </p>
+          <CommitteeMemberGrid members={members} />
         </section>
       </main>
 

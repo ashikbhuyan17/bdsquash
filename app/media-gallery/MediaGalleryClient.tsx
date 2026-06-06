@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Search, Image as ImageIcon, Video, ChevronDown } from 'lucide-react';
+import { Image as ImageIcon, Video } from 'lucide-react';
 
 interface MediaItem {
   id: number;
@@ -25,12 +25,9 @@ export default function MediaGalleryClient({
 }: MediaGalleryClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState('');
   const [mediaType, setMediaType] = useState<'all' | 'photo' | 'video'>(
     defaultMediaType
   );
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Update media type when URL param changes
   useEffect(() => {
@@ -44,37 +41,14 @@ export default function MediaGalleryClient({
     }
   }, [searchParams]);
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsDropdownOpen(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  // Filter media items
   const filteredMedia = useMemo(() => {
     return mediaData.filter((item) => {
-      const matchesType = mediaType === 'all' || item.type === mediaType;
-      const matchesSearch = item.title
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-      return matchesType && matchesSearch;
+      return mediaType === 'all' || item.type === mediaType;
     });
-  }, [mediaData, mediaType, searchQuery]);
+  }, [mediaData, mediaType]);
 
   const handleMediaTypeChange = (type: 'all' | 'photo' | 'video') => {
     setMediaType(type);
-    setIsDropdownOpen(false);
     const params = new URLSearchParams(searchParams.toString());
     if (type === 'all') {
       params.delete('mt');

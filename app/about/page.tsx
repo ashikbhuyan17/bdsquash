@@ -8,20 +8,10 @@ export const metadata: Metadata = {
     'Learn about the Bangladesh Squash Rackets Federation (BSRF), our history, vision, mission, and objectives. Meet our executive committee and leadership.',
 };
 
-interface ExecutiveMember {
-  name: string;
-  position: string;
-  designation?: string;
-}
-
-interface SubCommittee {
-  name: string;
-  members: string[];
-}
-
 const AboutPage = () => {
-  // Executive Committee Data
-  const executiveCommittee: ExecutiveMember[] = [
+  /*
+  // Executive Committee / Sub-Committees data (sections commented out below)
+  const executiveCommittee = [
     { name: 'Faruk Khan, MP', position: 'President' },
     {
       name: 'Brigadier General G M Quamrul Islam, SPP (Retd) ',
@@ -29,8 +19,7 @@ const AboutPage = () => {
     },
   ];
 
-  // Sub-Committees Data
-  const subCommittees: SubCommittee[] = [
+  const subCommittees = [
     {
       name: 'Technical Committee',
       members: [
@@ -56,6 +45,7 @@ const AboutPage = () => {
       ],
     },
   ];
+  */
 
   return (
     <div className="min-h-screen bg-white text-gray-900 pt-[90px]">

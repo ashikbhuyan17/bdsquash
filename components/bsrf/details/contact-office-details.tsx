@@ -38,10 +38,10 @@ const CONTACT_ITEMS = [
     content: (
       <div className="flex flex-col gap-1">
         <a
-          href="mailto:info@bssf.com.bd"
+          href="mailto:info@bdsquash.org"
           className="transition-colors hover:text-bsrf-green"
         >
-          info@bssf.com.bd
+          info@bdsquash.org
         </a>
         <a
           href="mailto:squash.bd@gmail.com"
@@ -57,12 +57,12 @@ const CONTACT_ITEMS = [
     label: 'Website',
     content: (
       <a
-        href="https://bssf.com.bd"
+        href="https://bdsquash.org"
         target="_blank"
         rel="noopener noreferrer"
         className="font-semibold text-white transition-colors hover:text-bsrf-green"
       >
-        bssf.com.bd
+        bdsquash.org
       </a>
     ),
   },

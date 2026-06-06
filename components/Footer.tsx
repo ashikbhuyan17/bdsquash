@@ -66,10 +66,10 @@ const Footer = () => {
                 <Mail className="w-5 h-5 text-red-400 shrink-0" />
                 <div className="space-y-1">
                   <a
-                    href="mailto:info@bssf.com.bd"
+                    href="mailto:info@bdsquash.org"
                     className="block hover:text-white transition-colors"
                   >
-                    info@bssf.com.bd
+                    info@bdsquash.org
                   </a>
                   <a
                     href="mailto:squash.bd@gmail.com"
@@ -83,12 +83,12 @@ const Footer = () => {
               <div className="flex items-center gap-3">
                 <Globe className="w-5 h-5 text-purple-400 shrink-0" />
                 <a
-                  href="https://bssf.com.bd"
+                  href="https://bdsquash.org"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
                 >
-                  bssf.com.bd
+                  bdsquash.org
                 </a>
               </div>
             </div>
@@ -288,10 +288,10 @@ export default Footer;
 //                 <Mail className="w-5 h-5 text-red-400 flex-shrink-0" />
 //                 <div className="space-y-1">
 //                   <a
-//                     href="mailto:info@bssf.com.bd"
+//                     href="mailto:info@bdsquash.org"
 //                     className="block hover:text-white transition-colors"
 //                   >
-//                     info@bssf.com.bd
+//                     info@bdsquash.org
 //                   </a>
 //                   <a
 //                     href="mailto:shooting.bd@gmail.com"
@@ -305,12 +305,12 @@ export default Footer;
 //               <div className="flex items-center gap-3">
 //                 <Globe className="w-5 h-5 text-purple-400 flex-shrink-0" />
 //                 <a
-//                   href="https://bssf.com.bd"
+//                   href="https://bdsquash.org"
 //                   target="_blank"
 //                   rel="noopener noreferrer"
 //                   className="hover:text-white transition-colors"
 //                 >
-//                   bssf.com.bd
+//                   bdsquash.org
 //                 </a>
 //               </div>
 //             </div>

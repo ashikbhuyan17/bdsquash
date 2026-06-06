@@ -23,7 +23,8 @@ export type MediaGalleryItem = {
   category: GalleryCategory
   image: string | null
   newsLink: string
-  description: string
+  title: string | null
+  description: string | null
   isActive: boolean
 }
 
@@ -40,6 +41,7 @@ export type MediaGalleryCreatePayload = {
   category: GalleryCategory
   image: string
   newsLink: string
+  title: string
   description: string
   isActive: boolean
 }

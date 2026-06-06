@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, Globe } from 'lucide-react';
+import { Menu, ChevronDown } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -75,7 +75,6 @@ const navigationConfig = {
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [mobileOpenMenus, setMobileOpenMenus] = useState<Set<string>>(
@@ -133,12 +132,6 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
-      if (currentScrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
 
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false);
